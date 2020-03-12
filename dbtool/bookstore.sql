@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 阿里
-Source Server Version : 50729
-Source Host           : 118.31.58.31:3306
+Source Server         : localhost_3306
+Source Server Version : 80013
+Source Host           : 127.0.0.1:3306
 Source Database       : bookstore
 
 Target Server Type    : MYSQL
-Target Server Version : 50729
+Target Server Version : 80013
 File Encoding         : 65001
 
-Date: 2020-03-05 22:33:09
+Date: 2020-03-12 22:32:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,14 +20,14 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `book`;
 CREATE TABLE `book` (
-  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `publisher` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `publisher` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `id` int(6) unsigned zerofill NOT NULL AUTO_INCREMENT,
-  `img` longblob,
+  `img` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `storeCount` int(11) DEFAULT NULL,
-  `info` varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `info` varchar(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Table structure for order
@@ -35,8 +35,9 @@ CREATE TABLE `book` (
 DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `bookID` int(10) unsigned zerofill DEFAULT NULL,
-  `userAccount` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `bookID` int(10) unsigned zerofill NOT NULL,
+  `userAccount` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `count` int(10) unsigned zerofill NOT NULL,
   PRIMARY KEY (`id`),
   KEY `book_ref` (`bookID`),
   KEY `user_ref` (`userAccount`),
@@ -49,13 +50,13 @@ CREATE TABLE `order` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `account` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `password` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `address` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `province` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `city` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `account` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `address` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `province` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `city` varchar(16) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `money` float DEFAULT NULL,
-  `info` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `info` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`account`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

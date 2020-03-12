@@ -1,7 +1,10 @@
 package dbtool;
 
+import java.io.File;
 import java.sql.*;
-
+import java.util.ArrayList;
+import java.util.List;
+import dbtool.data.*;
 public class DBTool {
     private Connection conn = null;
     private Statement stmt = null;
@@ -18,7 +21,7 @@ public class DBTool {
             //getConnecting（）方法，用来连接mysql的数据库
             conn = DriverManager.getConnection("jdbc:mysql://" + dbUrl + "?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true  ", dbUser, dbPW);
             if (!conn.isClosed()) {
-                System.out.println("Succeeded connecting to the Database");
+                System.out.println("Succeeded connecting to the Database" + dbUrl);
             }
             //创建statement 对象 ，用来执行sql 语句
             stmt = conn.createStatement();
@@ -30,49 +33,146 @@ public class DBTool {
             //数据库连接失败异常处理
             e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace(); //handle exception
+            e.printStackTrace(); //handle other exception
         }
     }
 
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        if(stmt!=null){
+            stmt.close();
+        }
+        if(conn!=null){
+            conn.commit();
+            conn.close();
+        }
+    }
 
     //增
+
     /**
      * 添加图书
-     * @param bookName 图书名称
-     * @param publisher
-     * @param storeCount
-     * @return
-     * @throws SQLException
+     *
+     * @param bookName   图书名称
+     * @param publisher  出版社
+     * @param storeCount 图书库存
+     * @return 成功返回true 否则返回false
+     * @throws DBException
      */
-    public boolean addBook(String bookName, String publisher, int storeCount) throws DBException{
+    public boolean addBook(String bookName, String publisher, int storeCount) throws DBException {
 
         try {
-            PreparedStatement psmt = conn.prepareStatement("INSERT INTO book(name,publisher,storeCount) VALUE (?,?,?);");
+            PreparedStatement psmt = conn.prepareStatement("INSERT INTO book(name, publisher, storeCount) VALUE (?,?,?);");
             psmt.setString(1, bookName);
             psmt.setString(2, publisher);
             psmt.setInt(3, storeCount);
             psmt.executeUpdate();
         } catch (SQLException sqle) {
             System.out.println(sqle);
-            throw(new DBException(sqle.getMessage()));
+            throw (new DBException(sqle.getMessage()));
+//            return false;
+        }
+        return true;
+    }
+    /**
+     * 添加图书
+     *
+     * @param bookName   图书名称
+     * @param publisher  出版社
+     * @param storeCount 图书库存
+     * @param imgPath 图片路径
+     * @return 成功返回true 否则报错
+     *         图片不存在-》DBException("img not found");
+     *         数据库操作错误-》 DBException(sqle.getMessage())；
+     * @throws DBException
+     */
+    public boolean addBook(String bookName, String publisher, int storeCount, String imgPath) throws DBException {
+
+        try {
+            //检查图片路径
+            File img =new File(imgPath);
+            if(!img.exists())
+                throw  new DBException("img not found");
+            PreparedStatement psmt = conn.prepareStatement("INSERT INTO book(name, publisher, storeCount) VALUE (?,?,?);");
+            psmt.setString(1, bookName);
+            psmt.setString(2, publisher);
+            psmt.setInt(3, storeCount);
+            psmt.executeUpdate();
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+            throw (new DBException(sqle.getMessage()));
 //            return false;
         }
         return true;
     }
 
 
-
     //删
-    //改
-    //查
-    public boolean searchBook(){
+//    public boolean deleteXXX()throws DBException{
+//        try {
+//            PreparedStatement psmt = conn.prepareStatement("DELETE FROM ? WHERE ");
+//            psmt.setString(1, bookName);
+//            psmt.executeUpdate();
+//        } catch (SQLException sqle) {
+//            System.out.println(sqle);
+//            throw (new DBException(sqle.getMessage()));
+//        }
+//        return true;
+//    }
+    public boolean deleteBook(int bookID) throws DBException{
+        try {
+            PreparedStatement psmt = conn.prepareStatement("DELETE FROM book WHERE id=?");
+            psmt.setInt(1,bookID);
+            psmt.executeUpdate();
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+            throw (new DBException(sqle.getMessage()));
+        }
         return true;
     }
+
+    //改
+    public boolean changeBookStore(){
+        //TODO:执行更改
+        return true;
+    }
+
+    //查
+    public List<book> searchBookByName(String bookName) throws DBException {
+        try {
+            PreparedStatement psmt=conn.prepareStatement("SELECT * FROM book WHERE name = ?");
+            psmt.setString(1,bookName);
+            ResultSet rs=psmt.executeQuery();
+            List<book> res=new ArrayList<>();
+            while (rs.next()){
+
+                String resName=rs.getString("name");
+                int resId=rs.getInt("id");
+                book temp=new book(resId,resName,this.conn);
+                temp.imgPath=rs.getString("img");
+                temp.info=rs.getString("info");
+                temp.publisher=rs.getString("publisher");
+                temp.storeCount=rs.getInt("storeCount");
+                res.add(temp);
+            }
+            return res;
+        }catch (SQLException sqle){
+            System.out.println(sqle);
+            throw new DBException(sqle.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         DBTool dt = new DBTool();
         try {
-            dt.addBook("语文","人民出版社",100);
-        }catch (SQLException e){
+            dt.addBook("语文", "人民出版社", 100);
+            List<book> res=dt.searchBookByName("语文");
+            for(book b : res){
+                System.out.println(b.getId());
+//                dt.deleteBook(b.id);
+            }
+        } catch (SQLException e) {
             System.out.println(e);
         }
     }

@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Skyer
+ */
 @Component
 public class DataTool {
     private BaseDataUtil dbUtil = new BaseDataUtil();

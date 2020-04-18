@@ -33,8 +33,7 @@ public class BookController {
     @RequestMapping(value = "/all",method = RequestMethod.GET)
     public Object getAllBookInfo(){
         // TODO ....
-
-        return null;
+        return dataTool.searchBook(null);
     }
 
     // 新增书籍

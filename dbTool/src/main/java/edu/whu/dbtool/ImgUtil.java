@@ -16,7 +16,8 @@ import java.util.UUID;
 public class ImgUtil {
     static BASE64Encoder encoder = new BASE64Encoder();
     static BASE64Decoder decoder = new BASE64Decoder();
-    static String imgRoot = "res/imgs/";
+    public static String imgRoot = "E://workspace/Web/bookstore/bookShop/target/classes/static/";
+//    public static String imgRoot1 =ImgUtil.class.getResource("static").getFile();
 
     public static String Img2Base64(String imgPath) {
         File f = new File(imgPath);
@@ -62,14 +63,18 @@ public class ImgUtil {
     }
 
 
-    public static String saveImg(byte[] imgBytes, String fileName) throws IOException {
-        String path = imgRoot;
-        String dataName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHss"));
+    public static String saveImg(byte[] imgBytes, String fileName,String savePath) throws IOException {
+//        String savaPath = imgRoot;
+
         String type = fileName.substring(fileName.lastIndexOf(".") + 1);
-//        时间命名
-//        String saveFileName = path+dataName + fileName.substring(fileName.lastIndexOf("/") + 1);
+        /*
+        时间命名
+        String dataName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHss"));
+        String saveFileName = path+dataName + fileName.substring(fileName.lastIndexOf("/") + 1);
+        */
+
         //UUID命名
-        String saveFileName = path + UUID.randomUUID() + '.' + type;
+        String saveFileName = savePath + UUID.randomUUID() + '.' + type;
 
         if (type.equals("bmp") || type.equals("png") || type.equals("PNG") || type.equals("jpg") || type.equals("jpeg") || type.equals("JPG") || type.equals("JPEG") || type.equals("BMP") || type.equals("GIF")) {
             //将图片上传到指定路径的文件夹
@@ -105,7 +110,7 @@ public class ImgUtil {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(bi, "jpg", baos);
             byte[] bytes = baos.toByteArray();
-            String name = ImgUtil.saveImg(bytes, "res/test.png");
+            String name = ImgUtil.saveImg(bytes, "res/test.png",Thread.currentThread().getContextClassLoader().getResource("static").getPath()+File.separator);
             System.out.println(name);
             ImgUtil.deleteImg(name);
         } catch (IOException ioe) {

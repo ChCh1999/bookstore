@@ -34,10 +34,10 @@ public class FileController {
             URL url  =Thread.currentThread().getContextClassLoader().getResource("static");
             String path = url.getPath()+File.separator+name;
 //            File newFile = new File(path);
-//            OutputStream out = new FileOutputStream(newFile);
-//            out.write(byteImgData);
-//            out.flush();
-//            out.close();
+////            OutputStream out = new FileOutputStream(newFile);
+////            out.write(byteImgData);
+////            out.flush();
+////            out.close();
             ImgUtil.Base642Img(imgData,path);
             return name;
         } catch (Exception e){

@@ -1,6 +1,6 @@
 package edu.whu.bookshop.controller;
 
-import edu.whu.bookshop.dbtool.ImgUtil;
+import edu.whu.dbtool.ImgUtil;
 import edu.whu.mSpring.annotation.*;
 import sun.misc.BASE64Decoder;
 

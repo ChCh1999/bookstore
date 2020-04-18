@@ -1,9 +1,9 @@
 package edu.whu.bookshop.controller;
 
 
-import edu.whu.bookshop.dbtool.DataTool;
-import edu.whu.bookshop.dbtool.data.EntityBuilder;
-import edu.whu.bookshop.dbtool.data.book;
+import edu.whu.dbtool.DataTool;
+import edu.whu.dbtool.data.EntityBuilder;
+import edu.whu.dbtool.data.book;
 import edu.whu.mSpring.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package edu.whu.bookshop.dbtool.data;
+package edu.whu.dbtool.data;
 
 public class orderBuilder {
 //    order order_init = new order();

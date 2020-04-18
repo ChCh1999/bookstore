@@ -1,7 +1,7 @@
-package edu.whu.bookshop.dbtool.data;
+package edu.whu.dbtool.data;
 
 
-import edu.whu.bookshop.dbtool.DBException;
+import edu.whu.dbtool.DBException;
 
 import java.io.File;
 import java.util.HashMap;
@@ -77,7 +77,7 @@ public class book {
         return id;
     }
 
-    public Map<String, Object> getDataMap() {
+    public Map<String, Object> genDataMap() {
         Map<String, Object> res = new HashMap<>();
         res.put("name", this.name);
         res.put("id", this.id);
@@ -118,5 +118,15 @@ public class book {
     }
 
 
-
+    @Override
+    public String toString() {
+        return "book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", imgPath='" + imgPath + '\'' +
+                ", info='" + info + '\'' +
+                ", storeCount=" + storeCount +
+                '}';
+    }
 }

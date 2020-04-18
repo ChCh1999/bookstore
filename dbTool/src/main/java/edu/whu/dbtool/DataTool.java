@@ -1,9 +1,9 @@
-package edu.whu.bookshop.dbtool;
+package edu.whu.dbtool;
 
 
-import edu.whu.bookshop.dbtool.data.book;
-import edu.whu.bookshop.dbtool.data.order;
-import edu.whu.bookshop.dbtool.data.user;
+import edu.whu.dbtool.data.book;
+import edu.whu.dbtool.data.order;
+import edu.whu.dbtool.data.user;
 import edu.whu.mSpring.annotation.Component;
 
 import java.sql.ResultSet;
@@ -87,7 +87,7 @@ public class DataTool {
      */
     public boolean insertBook(List<book> books) {
         List<Map<String, Object>> data = new ArrayList<>();
-        for (book temp : books) data.add(temp.getDataMap());
+        for (book temp : books) data.add(temp.genDataMap());
         try {
             int updataCount = dbUtil.insertDataBatch("book", data);
             return updataCount == books.size();
@@ -105,7 +105,7 @@ public class DataTool {
      */
     public boolean insertBook(book aBook) {
         try {
-            return dbUtil.insertData("book", aBook.getDataMap()) == 1;
+            return dbUtil.insertData("book", aBook.genDataMap()) == 1;
         } catch (DBException dbe) {
             System.out.println(dbe.getMessage());
             return false;
@@ -123,7 +123,7 @@ public class DataTool {
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("id", aBook.getId());
-            return dbUtil.updateData("book", aBook.getDataMap(), map) == 1;
+            return dbUtil.updateData("book", aBook.genDataMap(), map) == 1;
         } catch (DBException e) {
             e.printStackTrace();
             return false;
@@ -141,7 +141,7 @@ public class DataTool {
         List<Map<String, Object>> conList = new ArrayList<>();
         for (book temp : books) {
             if (!temp.isChanged()) continue;
-            data.add(temp.getDataMap());
+            data.add(temp.genDataMap());
             Map<String, Object> map = new HashMap<>();
             map.put("id", temp.getId());
             conList.add(map);
@@ -232,7 +232,7 @@ public class DataTool {
      */
     public boolean insertOrder(List<order> orders) {
         List<Map<String, Object>> data = new ArrayList<>();
-        for (order temp : orders) data.add(temp.getDataMap());
+        for (order temp : orders) data.add(temp.genDataMap());
         try {
             int updataCount = dbUtil.insertDataBatch("order", data);
             return updataCount == orders.size();
@@ -250,7 +250,7 @@ public class DataTool {
      */
     public boolean insertOrder(order aOrder) {
         try {
-            return dbUtil.insertData("order", aOrder.getDataMap()) == 1;
+            return dbUtil.insertData("order", aOrder.genDataMap()) == 1;
         } catch (DBException dbe) {
             System.out.println(dbe.getMessage());
             return false;
@@ -268,7 +268,7 @@ public class DataTool {
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("id", aOrder.getId());
-            return dbUtil.updateData("order", aOrder.getDataMap(), map) == 1;
+            return dbUtil.updateData("order", aOrder.genDataMap(), map) == 1;
         } catch (DBException e) {
             e.printStackTrace();
             return false;
@@ -286,7 +286,7 @@ public class DataTool {
         List<Map<String, Object>> conList = new ArrayList<>();
         for (order temp : orders) {
             if (!temp.isChanged()) continue;
-            data.add(temp.getDataMap());
+            data.add(temp.genDataMap());
             Map<String, Object> map = new HashMap<>();
             map.put("id", temp.getId());
             conList.add(map);
@@ -378,7 +378,7 @@ public class DataTool {
      */
     public boolean insertUser(List<user> users) {
         List<Map<String, Object>> data = new ArrayList<>();
-        for (user temp : users) data.add(temp.getDataMap());
+        for (user temp : users) data.add(temp.genDataMap());
         try {
             int updataCount = dbUtil.insertDataBatch("user", data);
             return updataCount == users.size();
@@ -396,7 +396,7 @@ public class DataTool {
      */
     public boolean insertUser(user aUser) {
         try {
-            return dbUtil.insertData("user", aUser.getDataMap()) == 1;
+            return dbUtil.insertData("user", aUser.genDataMap()) == 1;
         } catch (DBException dbe) {
             System.out.println(dbe.getMessage());
             return false;
@@ -414,7 +414,7 @@ public class DataTool {
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("id", aUser.getAccount());
-            return dbUtil.updateData("user", aUser.getDataMap(), map) == 1;
+            return dbUtil.updateData("user", aUser.genDataMap(), map) == 1;
         } catch (DBException e) {
             e.printStackTrace();
             return false;
@@ -432,7 +432,7 @@ public class DataTool {
         List<Map<String, Object>> conList = new ArrayList<>();
         for (user temp : users) {
             if (!temp.isChanged()) continue;
-            data.add(temp.getDataMap());
+            data.add(temp.genDataMap());
             Map<String, Object> map = new HashMap<>();
             map.put("account", temp.getAccount());
             conList.add(map);

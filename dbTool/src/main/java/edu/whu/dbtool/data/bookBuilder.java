@@ -1,4 +1,4 @@
-package edu.whu.bookshop.dbtool.data;
+package edu.whu.dbtool.data;
 
 public class bookBuilder {
     private book book_init=new book();

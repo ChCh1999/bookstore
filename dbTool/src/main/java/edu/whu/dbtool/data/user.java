@@ -1,4 +1,4 @@
-package edu.whu.bookshop.dbtool.data;
+package edu.whu.dbtool.data;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +69,7 @@ public class user {
         return money;
     }
 
-    public Map<String, Object> getDataMap() {
+    public Map<String, Object> genDataMap() {
         Map<String, Object> res = new HashMap<>();
         res.put("account", this.account);
         res.put("password", password);

@@ -1,4 +1,4 @@
-package edu.whu.bookshop.dbtool;
+package edu.whu.dbtool;
 
 import java.sql.*;
 import java.util.*;

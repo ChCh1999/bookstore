@@ -1,4 +1,4 @@
-package edu.whu.bookshop.dbtool;
+package edu.whu.dbtool;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;

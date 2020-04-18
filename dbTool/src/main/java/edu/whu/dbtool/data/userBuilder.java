@@ -1,4 +1,4 @@
-package edu.whu.bookshop.dbtool.data;
+package edu.whu.dbtool.data;
 
 public class userBuilder {
     user user_init = new user();

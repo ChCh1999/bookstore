@@ -12,6 +12,8 @@
         <module>miniTomcat</module>
         <module>miniSpring</module>
         <module>bookShop</module>
+        <module>dbTool</module>
+        <module>dbTool</module>
     </modules>
 
     <dependencies>

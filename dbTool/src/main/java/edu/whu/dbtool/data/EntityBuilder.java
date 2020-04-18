@@ -1,4 +1,4 @@
-package edu.whu.bookshop.dbtool.data;
+package edu.whu.dbtool.data;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

@@ -1,4 +1,4 @@
-package edu.whu.bookshop.dbtool.data;
+package edu.whu.dbtool.data;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class order {
     public int getCount() {
         return count;
     }
-    public Map<String, Object> getDataMap() {
+    public Map<String, Object> genDataMap() {
         Map<String, Object> res = new HashMap<>();
         res.put("id", this.id);
         res.put("bookID", this.bookID);

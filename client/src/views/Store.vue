@@ -9,13 +9,14 @@
                 :name="book.name"
                 :author="book.publisher"
                 :desc="book.info"
-                :price="book.price" />
+                :price="book.price"
+                :imgPath="book.imgPath" />
     </el-row>
 
     <el-pagination layout="total, prev, pager, next, jumper"
                    :total="books.length"
                    :page-size="12"
-                   :hide-on-single-page="false"
+                   :hide-on-single-page="true"
                    @current-change="changePage"></el-pagination>
     <!-- currentpage: {{ pageIndex }} -->
   </div>
@@ -40,7 +41,7 @@ export default {
 
   computed: {
     ...mapState({
-     // books: state => state.Books.books
+      // books: state => state.Books.books
     })
   },
 
@@ -50,7 +51,7 @@ export default {
       scrollTo(0, 0);
     }
   },
-  mounted() {
+  mounted () {
     console.log("mounted")
     this.axios.get("/server/book/all").then((response) => {
       console.log(response)

@@ -21,7 +21,7 @@ public class book {
     String info;
     int storeCount;
     private boolean isChanged = false;
-//    String imgData;
+    //    String imgData;
     float price;
 
     public enum attr {
@@ -32,13 +32,13 @@ public class book {
 
     }
 
-    public book(String name, String publisher, String imgPath, String info,float price, int storeCount) {
+    public book(String name, String publisher, String imgPath, String info, float price, int storeCount) {
         this.name = name;
         this.publisher = publisher;
         this.imgPath = imgPath;
         this.info = info;
         this.storeCount = storeCount;
-        this.price=price;
+        this.price = price;
     }
 
     /**
@@ -51,13 +51,14 @@ public class book {
      * @param info
      * @param storeCount
      */
-    public book(int id, String name, String publisher, String imgPath, String info, int storeCount,float price) {
+    public book(int id, String name, String publisher, String imgPath, String info, int storeCount, float price) {
         this.id = id;
         this.name = name;
         this.publisher = publisher;
         this.imgPath = imgPath;
         this.info = info;
         this.storeCount = storeCount;
+        this.price = price;
     }
 
     public String getName() {
@@ -80,8 +81,8 @@ public class book {
         return storeCount;
     }
 
-    public double getPrice() {
-        return price;
+    public float getPrice() {
+        return price ;
     }
 
     public boolean isChanged() {

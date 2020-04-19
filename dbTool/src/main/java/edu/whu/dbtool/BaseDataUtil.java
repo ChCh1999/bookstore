@@ -6,12 +6,12 @@ import java.util.Map.Entry;
 
 public class BaseDataUtil {
     private Connection conn = null;
-    private String dbUrl = "118.31.58.31:3306/bookstore";
-    private String dbUser = "conn";
-    private String dbPW = "chaos123";
-//    private String dbUrl = "localhost:3306/bookstore";
-//    private String dbUser = "root";
-//    private String dbPW = "123456";
+//    private String dbUrl = "118.31.58.31:3306/bookstore";
+//    private String dbUser = "conn";
+//    private String dbPW = "chaos123";
+    private String dbUrl = "localhost:3306/bookstore";
+    private String dbUser = "root";
+    private String dbPW = "123456";
     private final int batchSize = 100;
 
     public BaseDataUtil() {

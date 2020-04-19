@@ -1,12 +1,12 @@
 module.exports = {
   devServer: {
     proxy: {
-      '/api': {
-        target: 'http://www.example.org',
+      '/server': {
+        target: "http://localhost:8080",
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          '^/api': ''
+          '^/server': ''
         }
       }
     }

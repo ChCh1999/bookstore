@@ -29,12 +29,12 @@ export default {
     author: String,
     desc: String,
     price: Number,
-    imgPath: String,
-    imgData: String
+    imgPath: String
   },
   data() {
     return {
-      count: 1
+      count: 1,
+      imgData: String
     };
   },
   mounted() {
@@ -45,7 +45,7 @@ export default {
         }
       })
       .then(response => {
-        console.log(this.imgPath);
+        // console.log(this.imgPath);
         var imgString = response.data.imgData;
         this.imgData = "data:image/jpg;base64," + imgString;
         // Base642Img(imgString, this.fileName)

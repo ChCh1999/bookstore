@@ -52,9 +52,9 @@ export default {
     }
   },
   mounted () {
-    console.log("mounted")
+    // console.log("mounted")
     this.axios.get("/server/book/all").then((response) => {
-      console.log(response)
+      console.log('all books', response)
       this.books = response.data
       // console.log(this.books)
     }).catch((error) => {

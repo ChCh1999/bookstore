@@ -2,7 +2,6 @@
   <div class="user-info">
     <el-tabs v-model="activeName"
              tab-position="left">
-      <div></div>
       <el-tab-pane label="个人详细信息"
                    name="first">
         <el-form :model="form"

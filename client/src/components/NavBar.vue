@@ -17,10 +17,16 @@
           </el-badge>
         </li>
       </ul>
-      <a href="#/">
-        <span></span>
-        <i class="iconfont icon-denglu"></i>
+      <a href="#/login" v-if='ifLogin'>
+        <!-- <span></span> -->
+        <i class="iconfont icon-denglu" herf="#/login"></i>
         登录/注册
+      </a>
+      <a href="#/store" v-else>
+        <!-- <span></span> -->
+        <!-- <i class="iconfont icon-denglu" herf="#/login"></i> -->
+        已登录用户：
+        {{userAccount}}
       </a>
     </nav>
   </div>
@@ -32,6 +38,12 @@ export default {
   computed: {
     totalCount () {
       return this.$store.getters.totalOrderCount
+    },
+    ifLogin () {
+      return this.$store.getters.ifLogin
+    },
+    userAccount () {
+      return this.$store.getters.userAccount
     }
   }
 }

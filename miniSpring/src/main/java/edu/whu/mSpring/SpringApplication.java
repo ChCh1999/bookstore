@@ -38,7 +38,7 @@ public class SpringApplication {
         SimpleContainer container = new SimpleContainer(new DispatcherServlet());
         connector.setContainer(container);
         try {
-            connector.initialize();
+//            connector.initialize();
             connector.start();
 
             // make the application wait until we press any key.

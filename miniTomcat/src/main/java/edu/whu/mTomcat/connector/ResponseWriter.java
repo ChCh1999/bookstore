@@ -3,13 +3,7 @@ package edu.whu.mTomcat.connector;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-/**
- * A subclass of PrintWriter that automatically flushes each time
- * a print() or println() method is called.
- */
-
 public class ResponseWriter extends PrintWriter {
-
   public ResponseWriter(OutputStreamWriter writer) {
     super(writer);
   }

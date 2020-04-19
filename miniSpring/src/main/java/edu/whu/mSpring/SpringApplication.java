@@ -50,7 +50,7 @@ public class SpringApplication {
     }
 
     private List<String> classNames = new ArrayList<>();
-    private void doScanner(String packageName) {
+    public void doScanner(String packageName) {
         //把所有的.替换成/
         String resource = packageName.replaceAll("\\.", "/");
         URL url  =Thread.currentThread().getContextClassLoader().getResource(resource);

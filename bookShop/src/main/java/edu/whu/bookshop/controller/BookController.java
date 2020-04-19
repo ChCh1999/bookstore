@@ -1,9 +1,9 @@
 package edu.whu.bookshop.controller;
 
 
-import edu.whu.bookshop.dbtool.DataTool;
-import edu.whu.bookshop.dbtool.data.EntityBuilder;
-import edu.whu.bookshop.dbtool.data.book;
+import edu.whu.dbtool.DataTool;
+import edu.whu.dbtool.data.EntityBuilder;
+import edu.whu.dbtool.data.book;
 import edu.whu.mSpring.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -33,8 +33,7 @@ public class BookController {
     @RequestMapping(value = "/all",method = RequestMethod.GET)
     public Object getAllBookInfo(){
         // TODO ....
-
-        return null;
+        return dataTool.searchBook(null);
     }
 
     // 新增书籍

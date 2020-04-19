@@ -1,11 +1,11 @@
 package edu.whu.bookshop.controller;
 
 
-import edu.whu.bookshop.dbtool.DataTool;
-import edu.whu.bookshop.dbtool.data.EntityBuilder;
-import edu.whu.bookshop.dbtool.data.book;
-import edu.whu.bookshop.dbtool.data.order;
-import edu.whu.bookshop.dbtool.data.user;
+import edu.whu.dbtool.DataTool;
+import edu.whu.dbtool.data.EntityBuilder;
+import edu.whu.dbtool.data.book;
+import edu.whu.dbtool.data.order;
+import edu.whu.dbtool.data.user;
 import edu.whu.mSpring.annotation.*;
 import edu.whu.mSpring.servlet.SessionHelper;
 
@@ -35,7 +35,7 @@ public class OrderController {
             Map<String,Object> param2 = new HashMap();
             param2.put("id",bookID);
             List<book> books = dataTool.searchBook(param2);
-            Map mp = o.getDataMap();
+            Map mp = o.genDataMap();
             if(books!=null && books.size() > 0){
                 mp.put("bookInfo",books.get(0));
             }

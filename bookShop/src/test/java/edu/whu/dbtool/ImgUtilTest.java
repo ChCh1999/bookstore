@@ -19,7 +19,7 @@ class ImgUtilTest {
 
     @org.junit.jupiter.api.Test
     void base642Img() {
-        String img_64=ImgUtil.Img2Base64(ImgUtil.imgRoot+"Miky.png");
+        String img_64=ImgUtil.Img2Base64(ImgUtil.imgRoot+"20200418230243.jpg");
         ImgUtil.Base642Img(img_64, ImgUtil.imgRoot+"out.jpg");
     }
 }

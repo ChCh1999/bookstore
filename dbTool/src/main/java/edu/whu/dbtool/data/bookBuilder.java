@@ -1,7 +1,7 @@
 package edu.whu.dbtool.data;
 
 public class bookBuilder {
-    private book book_init=new book();
+    private book book_init = new book();
 
     public bookBuilder setID(int id) {
         book_init.id = id;
@@ -32,8 +32,16 @@ public class bookBuilder {
         book_init.storeCount = storeCount;
         return this;
     }
+    public bookBuilder setPrice(float price) {
+        book_init.price = price;
+        return this;
+    }
 
     public book getBook() {
-        return book_init;
+        if (book_init.name != null && book_init.price != 0) {
+            return book_init;
+        } else {
+            return null;
+        }
     }
 }

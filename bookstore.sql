@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50729
 File Encoding         : 65001
 
-Date: 2020-04-18 19:33:25
+Date: 2020-04-19 10:04:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,11 +23,18 @@ CREATE TABLE `book` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `publisher` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `id` int(6) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `price` float(10,2) NOT NULL,
   `img` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `storeCount` int(11) DEFAULT NULL,
   `info` varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+-- Records of book
+-- ----------------------------
+INSERT INTO `book` VALUES ('On the road', 'edu publisher', '000036', '39.90', '83c9d306-dcbc-4cde-9ee5-9ae2bcf148d7.jpg', '10', 'By Jack Kerouac');
+INSERT INTO `book` VALUES ('On the road', 'edu publisher', '000040', '39.90', '27fa4468-16a7-4c3c-86d9-592b77d97300.jpg', '10', 'By Jack Kerouac');
 
 -- ----------------------------
 -- Table structure for order
@@ -35,14 +42,19 @@ CREATE TABLE `book` (
 DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `bookID` int(10) unsigned zerofill DEFAULT NULL,
-  `userAccount` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `bookID` int(10) unsigned zerofill NOT NULL,
+  `userAccount` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `count` int(10) unsigned zerofill NOT NULL,
   PRIMARY KEY (`id`),
   KEY `book_ref` (`bookID`),
   KEY `user_ref` (`userAccount`),
   CONSTRAINT `book_ref` FOREIGN KEY (`bookID`) REFERENCES `book` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `user_ref` FOREIGN KEY (`userAccount`) REFERENCES `user` (`account`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+-- Records of order
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for user
@@ -59,3 +71,8 @@ CREATE TABLE `user` (
   `info` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`account`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('test001', null, '123456', null, null, null, '0', null);

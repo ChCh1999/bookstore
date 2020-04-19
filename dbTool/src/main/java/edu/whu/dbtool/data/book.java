@@ -21,7 +21,8 @@ public class book {
     String info;
     int storeCount;
     private boolean isChanged = false;
-    String imgData;
+//    String imgData;
+    float price;
 
     public enum attr {
         id, name, publisher, img, info, storeCount
@@ -31,12 +32,13 @@ public class book {
 
     }
 
-    public book(String name, String publisher, String imgPath, String info, int storeCount) {
+    public book(String name, String publisher, String imgPath, String info,float price, int storeCount) {
         this.name = name;
         this.publisher = publisher;
         this.imgPath = imgPath;
         this.info = info;
         this.storeCount = storeCount;
+        this.price=price;
     }
 
     /**
@@ -49,7 +51,7 @@ public class book {
      * @param info
      * @param storeCount
      */
-    public book(int id, String name, String publisher, String imgPath, String info, int storeCount) {
+    public book(int id, String name, String publisher, String imgPath, String info, int storeCount,float price) {
         this.id = id;
         this.name = name;
         this.publisher = publisher;
@@ -78,6 +80,10 @@ public class book {
         return storeCount;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
     public boolean isChanged() {
         return isChanged;
     }
@@ -91,6 +97,7 @@ public class book {
         res.put("name", this.name);
         res.put("id", this.id);
         res.put("storeCount", this.storeCount);
+        res.put("price", this.price);
         if (this.publisher != null) {
             res.put("publisher", this.publisher);
         }
@@ -107,10 +114,10 @@ public class book {
 //        this.id = id;
 //    }
 
-    public String getImgData() {
-        URL url =Thread.currentThread().getContextClassLoader().getResource("static");
+    public String ImgBase64() {
+        URL url = Thread.currentThread().getContextClassLoader().getResource("static");
         if (this.imgPath != null) {
-            return ImgUtil.Img2Base64(url.getPath() +File.separator+ this.imgPath);
+            return ImgUtil.Img2Base64(url.getPath() + File.separator + this.imgPath);
         }
         return null;
     }
@@ -132,7 +139,7 @@ public class book {
     }
 
     public void setImg(String imgBase64, String fileName) throws IOException {
-       URL url =Thread.currentThread().getContextClassLoader().getResource("static");
+        URL url = Thread.currentThread().getContextClassLoader().getResource("static");
         String imgPath = ImgUtil.saveImg(ImgUtil.Base642Img(imgBase64), fileName, url.getPath());
         assert imgPath != null;
         String[] keys = imgPath.split("/");

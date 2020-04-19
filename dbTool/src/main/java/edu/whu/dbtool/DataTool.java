@@ -52,7 +52,8 @@ public class DataTool {
                         rs.getString("publisher"),
                         rs.getString("img"),
                         rs.getString("info"),
-                        rs.getInt("storeCount")
+                        rs.getInt("storeCount"),
+                        rs.getFloat("price")
                 );
                 res.add(temp);
             }

@@ -47,7 +47,7 @@ public class OrderController {
             ,@RequestBody Map data){
         try {
             Map orderMap = new HashMap();
-            orderMap.put("bookid",data.get("bookid"));
+            orderMap.put("bookID",data.get("bookid"));
             orderMap.put("count",data.get("count"));
             Map session = (Map) SessionHelper.getSession(request.getRequestedSessionId());
             orderMap.put("userAccount",session.get("account"));

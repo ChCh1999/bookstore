@@ -21,12 +21,15 @@ public class EntityBuilder<T> {
                 field.setAccessible(true);
                 String name = field.getName();
                 Class<?> type = field.getType();
+                if(data.get(name) == null) continue;
                 if(type == String.class){
                     field.set(newInstance,(String)data.get(name));
                 } else if(type.getName().equals("float")){
                     field.set(newInstance,Float.parseFloat((String)data.get(name)));
                 } else if(type.getName().equals("boolean")){
                     field.set(newInstance,Boolean.parseBoolean((String)data.get(name)));
+                } else if(type.getName().equals("int")){
+                    field.set(newInstance,Integer.parseInt((String)data.get(name)));
                 }
             }
             return (T)newInstance;
@@ -44,5 +47,10 @@ public class EntityBuilder<T> {
         mp.put("isChanged","true");
         user u = new userBuilder().build(mp);
         System.out.println(u);
+
+        Map mp2 = new HashMap();
+        mp2.put("id",123);
+        order o = new orderBuilder().build(mp2);
+        System.out.println(o);
     }
 }

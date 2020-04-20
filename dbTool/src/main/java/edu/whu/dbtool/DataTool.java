@@ -419,7 +419,7 @@ public class DataTool {
 //        if(!aUser.isChanged())return true;
         try {
             Map<String, Object> map = new HashMap<>();
-            map.put("id", aUser.getAccount());
+            map.put("account", aUser.getAccount());
             return dbUtil.updateData("user", aUser.genDataMap(), map) == 1;
         } catch (DBException e) {
             e.printStackTrace();

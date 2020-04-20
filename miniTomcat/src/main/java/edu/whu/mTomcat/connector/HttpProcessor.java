@@ -6,6 +6,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -196,9 +197,8 @@ public class HttpProcessor implements Runnable {
         BufferedReader bufferedReader;
         InputStream input;
             InputStream inputStream=socket.getInputStream();//得到一个输入流，接收客户端传递的信息
-            InputStreamReader inputStreamReader=new InputStreamReader(inputStream);//提高效率，将自己字节流转为字符流
+            InputStreamReader inputStreamReader=new InputStreamReader(inputStream, StandardCharsets.ISO_8859_1);//提高效率，将自己字节流转为字符流
              bufferedReader =new BufferedReader(inputStreamReader);//加入缓冲区
-
 //            input = new SocketInputStream(socket.getInputStream(),
 //                    connector.getBufferSize());
             output = socket.getOutputStream();

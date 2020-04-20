@@ -12,6 +12,11 @@ public class order {
     public  enum attr{
         id,bookID,userAccount,count,
     }
+
+    public order (){
+
+    }
+
     public order(int id, int bookID, String userAccount, int count) {
         this.id = id;
         this.bookID = bookID;
@@ -41,7 +46,7 @@ public class order {
         Map<String, Object> res = new HashMap<>();
         res.put("id", this.id);
         res.put("bookID", this.bookID);
-        res.put("userAccouunt", this.userAccount);
+        res.put("userAccount", this.userAccount);
         res.put("count", this.count);
         return res;
     }

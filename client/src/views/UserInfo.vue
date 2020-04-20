@@ -6,7 +6,7 @@
           <el-form-item label="用户姓名:">
             <el-col :span="6">
               <el-input
-                v-model="form.userName"
+                v-model="form.name"
                 maxlength="11"
                 autocomplete="off"
                 style="width:200px"
@@ -16,7 +16,7 @@
           <el-form-item label="用户手机号:">
             <el-col :span="6">
               <el-input
-                v-model="form.userPhone"
+                v-model="form.info"
                 maxlength="11"
                 autocomplete="off"
                 style="width:200px"
@@ -60,11 +60,13 @@
           </el-form-item> -->
           <el-form-item label="收货地址：">
             <div>
-              <v-distpicker
+              <!-- <v-distpicker
                 hide-area
                 @province="onChangeProvince"
                 @city="onChangeCity"
-              ></v-distpicker>
+              ></v-distpicker> -->
+              <el-input v-model="form.province" placeholder="省"></el-input>
+              <el-input v-model="form.city" placeholder="市"></el-input>
             </div>
             <div>
               <el-input
@@ -133,6 +135,7 @@
 </template>
 <script>
 import VDistpicker from "v-distpicker";
+import base64 from "../plugins/base64"
 export default {
   data() {
     return {
@@ -161,21 +164,28 @@ export default {
     this.imgUrl = this.form.userHeadImg;
   },
   methods: {
-    changeUserInfo() {},
+    changeUserInfo() {
+      console.log(this.form);
+      this.axios.post("/server/user/update", this.form).then(response => {
+
+      }).catch(error => {
+        console.log(error);
+      })
+    },
     changeUserPwd() {},
     onChangeProvince(data) {
       if (data.value === "省") {
         delete this.form.province;
         return;
       }
-      this.form.province = data.value;
+      this.form.province = base64.encode(data.value);
     },
     onChangeCity(data) {
       if (data.value === "市") {
         delete this.form.city;
         return;
       }
-      this.form.city = data.value;
+      this.form.city = base64.encode(data.value)
     },
     quit() {
       this.axios
@@ -201,7 +211,7 @@ export default {
     console.log("getcookie", session);
     this.axios
       .get(
-        "/server/order/myorder",
+        "/server/user/info",
         {},
         {
           headers: {

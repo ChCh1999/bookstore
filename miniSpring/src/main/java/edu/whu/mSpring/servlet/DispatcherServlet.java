@@ -9,6 +9,8 @@ import edu.whu.mSpring.annotation.RequestMethod;
 import edu.whu.mSpring.interceptor.HandlerInterceptor;
 import edu.whu.mTomcat.connector.HttpRequest;
 import edu.whu.mTomcat.connector.HttpResponse;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
 import java.util.Map;
 
 public class DispatcherServlet extends HttpServlet {
@@ -125,7 +128,7 @@ public class DispatcherServlet extends HttpServlet {
         if(result == null) return;
         PrintWriter writer = httpResponse.getWriter();
         if(result.getClass() == String.class){
-            writer.println(result);
+            writer.println(((String)result));
         } else {
             writer.println(JSON.toJSONString(result));
         }

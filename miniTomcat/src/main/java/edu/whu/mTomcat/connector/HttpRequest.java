@@ -1,6 +1,7 @@
 package edu.whu.mTomcat.connector;
 
 import com.alibaba.fastjson.JSON;
+import sun.misc.BASE64Decoder;
 import edu.whu.mTomcat.util.RequestUtil;
 
 import javax.servlet.*;
@@ -8,6 +9,7 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.security.Principal;
 import java.text.ParseException;
@@ -105,12 +107,16 @@ public class HttpRequest implements HttpServletRequest {
                 }
 
                 Map body = new HashMap();
+                String str = new String(buf);
+//                String linename = new String(str.getBytes("ISO-8859-1"),"UTF-8");
+//                BASE64Decoder decoder = new BASE64Decoder();
+//                byte[] bytes = decoder.decodeBuffer(str);
+//                str = new String(bytes);
+//                str = URLDecoder.decode(str,"utf-8");
                 if ("application/x-www-form-urlencoded".equals(contentType)) {
-                    String ss = new String(buf);
-                    RequestUtil.parseParameters(body, ss, encoding);
+                    RequestUtil.parseParameters(body, str, encoding);
                 } else if (contentType.contains("application/json")) {
-                    String s = new String(buf);
-                    body = (Map) JSON.parse(s);
+                    body = (Map) JSON.parse(str);
                 }
                 setBody(body);
 

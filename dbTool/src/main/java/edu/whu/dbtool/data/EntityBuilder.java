@@ -25,11 +25,11 @@ public class EntityBuilder<T> {
                 if(type == String.class){
                     field.set(newInstance,(String)data.get(name));
                 } else if(type.getName().equals("float")){
-                    field.set(newInstance,Float.parseFloat((String)data.get(name)));
+                    field.set(newInstance,Float.parseFloat(data.get(name).toString()));
                 } else if(type.getName().equals("boolean")){
-                    field.set(newInstance,Boolean.parseBoolean((String)data.get(name)));
+                    field.set(newInstance,Boolean.parseBoolean(data.get(name).toString()));
                 } else if(type.getName().equals("int")){
-                    field.set(newInstance,Integer.parseInt((String)data.get(name)));
+                    field.set(newInstance,Integer.parseInt(data.get(name).toString()));
                 }
             }
             return (T)newInstance;

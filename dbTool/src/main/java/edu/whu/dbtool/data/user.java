@@ -81,6 +81,7 @@ public class user {
         if (this.city != null) res.put("city", this.city);
         if (this.province != null) res.put("province", this.province);
         if (this.info != null) res.put("info", this.info);
+        if (this.name != null) res.put("name", this.name);
         return res;
     }
 

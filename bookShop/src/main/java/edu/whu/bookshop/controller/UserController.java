@@ -50,7 +50,7 @@ public class UserController {
         if (users != null && users.size() > 0) {
             HttpResponse httpResponse = (HttpResponse) response;
             UUID uuid = UUID.randomUUID();
-            SessionHelper.putSession(uuid.toString(), users.get(0));
+            SessionHelper.putSession(uuid.toString(), users.get(0).genDataMap());
             httpResponse.setSeesion(uuid.toString());
             return "login success";
         } else {

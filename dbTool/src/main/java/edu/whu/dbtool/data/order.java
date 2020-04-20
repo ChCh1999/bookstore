@@ -18,6 +18,9 @@ public class order {
         this.userAccount = userAccount;
         this.count = count;
     }
+    public order() {
+
+    }
 
     public int getId() {
         return id;

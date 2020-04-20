@@ -2,10 +2,7 @@ package edu.whu.bookshop.controller;
 
 
 import edu.whu.dbtool.DataTool;
-import edu.whu.dbtool.data.EntityBuilder;
-import edu.whu.dbtool.data.book;
-import edu.whu.dbtool.data.order;
-import edu.whu.dbtool.data.user;
+import edu.whu.dbtool.data.*;
 import edu.whu.mSpring.annotation.*;
 import edu.whu.mSpring.servlet.SessionHelper;
 
@@ -54,7 +51,7 @@ public class OrderController {
             orderMap.put("count",data.get("count"));
             Map session = (Map) SessionHelper.getSession(request.getRequestedSessionId());
             orderMap.put("userAccount",session.get("account"));
-            order o = new EntityBuilder<order>().build(orderMap);
+            order o = new orderBuilder().build(orderMap);
             if(dataTool.insertOrder(o)){
                 return "success";
             }

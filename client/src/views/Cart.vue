@@ -5,10 +5,10 @@
               stripe>
       <el-table-column label="商品信息">
         <template slot-scope="scope">
-          <img src="../assets/bookcover.webp"
+          <img :src="scope.row.imgData"
                alt="bookcover"
                width="120px">
-          <span class="book-name">{{scope.row.name}}</span>
+          <div class="book-name">{{scope.row.name}}</div>
         </template>
       </el-table-column>
       <el-table-column label="数量">
@@ -24,7 +24,7 @@
       <el-table-column label="总价">
         <template slot-scope="scope">
           <div>
-            {{scope.row.count*scope.row.price}}
+            {{(scope.row.count*scope.row.price).toFixed(2)}}
           </div>
         </template>
       </el-table-column>
@@ -47,14 +47,14 @@
       </span>
     </el-dialog>
     <div class="commit-orders">
-      <span>总价：{{totalPrice}}</span>
+      <span>总价：{{totalPrice.toFixed(2)}}</span>
       <el-button type="warning"
                  @click="dialog2Visible = true"
                  style="margin-left: 10px">
         清空购物车
       </el-button>
       <el-button type="danger"
-                 @click="jumpCommit"
+                 @click="commit"
                  style="margin-left: 10px;">提交订单
       </el-button>
     </div>
@@ -90,8 +90,18 @@ export default {
     }
   },
   methods: {
-    jumpCommit () {
-      window.location.href = "#/commit-orders"
+    commit () {
+      this.tableData.forEach(order => {
+        console.log("committing order, bookid: " + order.id + ", count: " + order.count)
+        this.axios.post("/server/order/addbook", {
+          bookid: order.id,
+          count: order.count
+        }).then(response => {
+          console.log(response)
+        }).catch(error => {
+          console.log(error)
+        })
+      });
     },
     showDialog (index) {
       this.dialog1Visible = true

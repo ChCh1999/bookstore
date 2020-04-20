@@ -1,6 +1,6 @@
 package edu.whu.dbtool.data;
 
-public class orderBuilder {
+public class orderBuilder extends EntityBuilder<order> {
 //    order order_init = new order();
 //
 //    public orderBuilder setId(int id) {

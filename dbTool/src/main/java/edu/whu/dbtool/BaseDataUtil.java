@@ -6,12 +6,6 @@ import java.util.Map.Entry;
 
 public class BaseDataUtil {
     private Connection conn = null;
-    private String dbUrl = "118.31.58.31:3306/bookstore";
-    private String dbUser = "conn";
-    private String dbPW = "chaos123";
-//    private String dbUrl = "localhost:3306/bookstore";
-//    private String dbUser = "root";
-//    private String dbPW = "123456";
     private final int batchSize = 100;
 
     public BaseDataUtil() {
@@ -22,7 +16,7 @@ public class BaseDataUtil {
 //            conn = DriverManager.getConnection("jdbc:mysql://" + dbUrl + "?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true  ", dbUser, dbPW);
             conn=DBUtil.getConnection();
             if (!conn.isClosed()) {
-                System.out.println("Succeeded connecting to the Database" + dbUrl);
+                System.out.println("Succeeded connecting to the Database");
             }
             conn.close();
         }  catch (SQLException e) {
@@ -108,7 +102,7 @@ public class BaseDataUtil {
 
     private String buildInsertSQL(String table, Map<String, Object> params, List<String> keyList) throws DBException {
         //构造SQL语句
-        StringBuilder sql = new StringBuilder("INSERT INTO " + table);
+        StringBuilder sql = new StringBuilder("INSERT INTO "  + "`"+ table+"` ");
         StringBuilder valueString = new StringBuilder("VALUE (");
         keyList.clear(); //参数对照表
         if (params != null && params.size() > 0) {
@@ -163,7 +157,7 @@ public class BaseDataUtil {
      */
     public int deleteData(String table, Map<String, Object> params) throws DBException {
         //构造SQL语句
-        StringBuilder sqlBuilder = new StringBuilder("DELETE FROM " + table);
+        StringBuilder sqlBuilder = new StringBuilder("DELETE FROM "  + "`"+ table+"` ");
         List<String> keyList = new ArrayList<>();
 
         if (params != null && params.size() > 0) {
@@ -191,7 +185,7 @@ public class BaseDataUtil {
     public void deleteALL(String table) throws DBException {
         try {
             getConnection();
-            PreparedStatement pstm = conn.prepareStatement("DELETE FROM " + table);
+            PreparedStatement pstm = conn.prepareStatement("DELETE FROM "  + "`"+ table+"` ");
             pstm.executeUpdate();
         } catch (SQLException sqle) {
             //sqle.printStackTrace();
@@ -202,7 +196,7 @@ public class BaseDataUtil {
 
     private String buildUpdataSQL(String table, Map<String, Object> params, Map<String, Object> conditions, List<String> keyList) throws DBException {
         //构造SQL语句
-        StringBuilder sql = new StringBuilder("UPDATE " + table);
+        StringBuilder sql = new StringBuilder("UPDATE "  + "`"+ table+"` ");
         StringBuilder valueString = new StringBuilder(" SET ");
         StringBuilder conString = new StringBuilder(" WHERE ");
         keyList.clear();
@@ -310,7 +304,7 @@ public class BaseDataUtil {
     public ResultSet searchData(String table, Map<String, Object> params) throws DBException {
         try {
             //构造SQL语句
-            StringBuilder sql = new StringBuilder("SELECT * FROM " + table);
+            StringBuilder sql = new StringBuilder("SELECT * FROM " + "`"+ table+"` ");
             List<Object> paramsValList = new ArrayList<>();
 
             if (params != null && params.size() > 0) {
@@ -327,7 +321,6 @@ public class BaseDataUtil {
                     }
                 }
             }
-
 
             //设置参数
             getConnection();

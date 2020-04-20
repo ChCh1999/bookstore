@@ -34,7 +34,7 @@ public class UserController {
         if(dataTool.insertUser(new EntityBuilder<user>().build(data))){
             return "success";
         }
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return "failed";
     }
 
@@ -53,6 +53,7 @@ public class UserController {
             httpResponse.setSeesion(uuid.toString());
             return "login success";
         } else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return "login failed";
         }
     }

@@ -382,7 +382,9 @@ public class DataTool {
      */
     public boolean insertUser(List<user> users) {
         List<Map<String, Object>> data = new ArrayList<>();
-        for (user temp : users) data.add(temp.genDataMap());
+        for (user temp : users) {
+            data.add(temp.genDataMap());
+        }
         try {
             int updataCount = dbUtil.insertDataBatch("user", data);
             return updataCount == users.size();

@@ -24,7 +24,10 @@ public class user {
         this.account = UUID.randomUUID().toString();
         money = 0;
     }
-
+    public user(String account, String pwd){
+        this.password=pwd;
+        this.account = account;
+    }
     public user(String account, String name, String password, String address, String province, String city, String info, float money) {
         this.account = account;
         this.name = name;

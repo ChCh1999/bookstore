@@ -2,6 +2,7 @@ package edu.whu.dbtool.data;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,9 +40,10 @@ public class EntityBuilder<T> {
     public static void main(String[] args){
         Map mp = new HashMap<>();
         mp.put("account","123456");
-        mp.put("name","zangsan");
-        mp.put("money","123");
-        mp.put("isChanged","true");
+        mp.put("password","123456");
+//        mp.put("name","zangsan");
+//        mp.put("money","123");
+//        mp.put("isChanged","true");
         user u = new EntityBuilder<user>().build(mp);
         System.out.println(u);
     }

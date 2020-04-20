@@ -127,10 +127,13 @@ public class HttpProcessor implements Runnable {
             throws IOException, ServletException {
 
         String requestLineStr = input.readLine();
-        if(requestLineStr == null) throw new SecurityException("invalid request line");
-        String[] parts = requestLineStr.split(" ");
-        if(parts.length != 3)
+        if(requestLineStr == null) {
             throw new SecurityException("invalid request line");
+        }
+        String[] parts = requestLineStr.split(" ");
+        if(parts.length != 3) {
+            throw new SecurityException("invalid request line");
+        }
 
         request.setMethod(parts[0]);
         request.setProtocol(parts[2]);

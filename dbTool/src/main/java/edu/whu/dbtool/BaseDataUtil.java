@@ -24,7 +24,7 @@ public class BaseDataUtil {
             if (!conn.isClosed()) {
                 System.out.println("Succeeded connecting to the Database" + dbUrl);
             }
-
+            conn.close();
         }  catch (SQLException e) {
             //数据库连接失败异常处理
             e.printStackTrace();
@@ -42,16 +42,21 @@ public class BaseDataUtil {
         }
     }
 
+    private void getConnection() throws SQLException {
+        this.conn.close();
+        this.conn=DBUtil.getConnection();
+    }
     private int executeUpdate(String sql, List<String> keyList, Map<String, Object> params) throws DBException {
         try {
             //设置参数
+            getConnection();
             PreparedStatement psmt = conn.prepareStatement(sql.toString());
             int len = keyList.size();
             for (int i = 0; i < len; i++) {
                 psmt.setObject(i + 1, params.get(keyList.get(i)));
             }
-
-            return psmt.executeUpdate();
+            int res=psmt.executeUpdate();
+            return res;
 
         } catch (SQLException sqle) {
             //sqle.printStackTrace();
@@ -64,6 +69,7 @@ public class BaseDataUtil {
             //设置参数，添加batch
             int updataCount = 0;
             int count = 0;
+            getConnection();
             PreparedStatement psmt = conn.prepareStatement(sql);
 
             int totalCount = batchsData.size();
@@ -184,6 +190,7 @@ public class BaseDataUtil {
      */
     public void deleteALL(String table) throws DBException {
         try {
+            getConnection();
             PreparedStatement pstm = conn.prepareStatement("DELETE FROM " + table);
             pstm.executeUpdate();
         } catch (SQLException sqle) {
@@ -275,7 +282,7 @@ public class BaseDataUtil {
             Map<String, Object> conditionTemp = conditionsList.get(0);
 
             String sql = buildUpdataSQL(table, paramTemp, conditionTemp, keyList);
-            PreparedStatement psmt = conn.prepareStatement(sql);
+
             int totalCount = Math.min(paramsList.size(), conditionsList.size());
             List<Map<String, Object>> par = new ArrayList<>();
             for (int i = 0; i < totalCount; i++) {
@@ -284,7 +291,6 @@ public class BaseDataUtil {
                 params.putAll(conditionsList.get(i));
                 par.add(params);
             }
-
             return executeUpdateBatch(sql, keyList, par);
 
         } catch (SQLException sqle) {
@@ -314,13 +320,17 @@ public class BaseDataUtil {
                     Entry<String, Object> entry = entries.next();
                     sql.append(entry.getKey());
                     paramsValList.add(entry.getValue());
-                    if (entries.hasNext()) sql.append("=? AND ");
-                    else sql.append("=?");
+                    if (entries.hasNext()) {
+                        sql.append("=? AND ");
+                    } else {
+                        sql.append("=?");
+                    }
                 }
             }
 
 
             //设置参数
+            getConnection();
             PreparedStatement psmt = conn.prepareStatement(sql.toString());
             int len = paramsValList.size();
             for (int i = 0; i < len; i++) {
@@ -328,7 +338,8 @@ public class BaseDataUtil {
             }
 
             //返回查询结果
-            return psmt.executeQuery();
+            ResultSet res=psmt.executeQuery();
+            return res;
 
         } catch (SQLException sqle) {
 //            //sqle.printStackTrace();

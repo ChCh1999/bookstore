@@ -38,7 +38,10 @@ const routes = [
   },
   {
     path: '/user-info',
-    component: UserInfo
+    component: UserInfo,
+    meta: {
+      requireAuth: true
+    }
   },
   {
     path: '/login',

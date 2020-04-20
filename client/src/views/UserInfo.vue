@@ -74,7 +74,7 @@
               ></el-input>
             </div>
           </el-form-item>
-          <el-button type="success" icon="el-icon-edit" @click=";"
+          <el-button type="success" icon="el-icon-edit" @click="changeUserInfo"
             >确认修改</el-button
           >
           <el-button
@@ -124,7 +124,7 @@
           class="updateCode-item"
           type="success"
           icon="el-icon-edit"
-          @click=";"
+          @click="changeUserPwd"
           >确 定</el-button
         >
       </el-tab-pane>
@@ -161,6 +161,8 @@ export default {
     this.imgUrl = this.form.userHeadImg;
   },
   methods: {
+    changeUserInfo() {},
+    changeUserPwd() {},
     onChangeProvince(data) {
       if (data.value === "省") {
         delete this.form.province;
@@ -179,6 +181,12 @@ export default {
       this.axios
         .get("/server/user/logout")
         .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .then(response => {
           console.log("logout response", response);
           this.$store.commit("quit");
           this.$router.push({ path: "/store" });
@@ -187,6 +195,25 @@ export default {
           console.log(err);
         });
     }
+  },
+  mounted() {
+    var session = this.$cookies.get("jsessionid");
+    console.log("getcookie", session);
+    this.axios
+      .get(
+        "/server/order/myorder",
+        {},
+        {
+          headers: {
+            "X-CSRFToken": this.$cookies.get("jsessionid"),
+            "Content-type": "application/json",
+            Cookie: "jsessionid=" + this.$cookies.get("jsessionid")
+          }
+        }
+      )
+      .then(response => {
+        console.log(response.data);
+      });
   }
 };
 </script>

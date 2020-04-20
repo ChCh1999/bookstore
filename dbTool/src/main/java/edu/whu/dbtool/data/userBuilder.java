@@ -1,6 +1,6 @@
 package edu.whu.dbtool.data;
 
-public class userBuilder {
+public class userBuilder extends EntityBuilder<user>{
     user user_init = new user();
 
     public userBuilder setAccount(String account) {

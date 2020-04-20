@@ -1,6 +1,6 @@
 package edu.whu.dbtool.data;
 
-public class bookBuilder {
+public class bookBuilder extends EntityBuilder<book>{
     private book book_init = new book();
 
     public bookBuilder setID(int id) {

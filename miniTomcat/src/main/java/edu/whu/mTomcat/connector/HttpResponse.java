@@ -465,6 +465,7 @@ public class HttpResponse implements HttpServletResponse {
   public void setSeesion(String sessionid){
     this.sessionid = sessionid;
     Cookie session = new Cookie("jsessionid",sessionid);
+    session.setPath("/");
     addCookie(session);
   }
 
@@ -472,6 +473,7 @@ public class HttpResponse implements HttpServletResponse {
     this.sessionid = sessionid;
     Cookie session = new Cookie("jsessionid",sessionid);
     session.setMaxAge(expirytime);
+    session.setPath("/");
     addCookie(session);
   }
 }

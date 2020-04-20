@@ -10,7 +10,7 @@ const mutations = {
     console.log(account)
   },
   quit: (state) => {
-    state.userAccount = ''
+    state.userAccount = '未登录'
     state.login = false
   }
 };

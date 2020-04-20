@@ -23,11 +23,11 @@
           class="inputBox pwdBox"
         ></el-input>
       </el-form-item>
-      <el-button type="warning" class="loginButton" @click="login"
+      <el-button type="warning" class="loginButton cardButton" @click="login"
         >登录</el-button
       >
       <p></p>
-      <el-button type="danger" @click="toSetUp" class="signupButton"
+      <el-button type="danger" @click="toSetUp" class="signupButton cardButton"
         >注册</el-button
       >
     </el-form>
@@ -84,7 +84,7 @@ export default {
     },
     login: function() {
       var cur = this;
-      console.log("try login");
+      console.log("try login", this.loginForm);
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           // console.log(cur.loginForm.account, cur.loginForm.pass);
@@ -105,6 +105,7 @@ export default {
             })
             .catch(error => {
               console.log(error);
+              alert("账号或密码错误");
             });
         } else {
           console.log("error submit!!");
@@ -135,16 +136,17 @@ export default {
 }
 .loginButton {
   text-align: center;
-  position: relative;
   top: 40px;
   /* margin-top: 30px; */
-  width: 80%;
 }
 .signupButton {
   text-align: center;
-  position: relative;
   top: 60px;
+}
+.cardButton{
+  position: relative;
   width: 80%;
+  left: 10%;
   margin-left: 0;
 }
 /* .inputBox {

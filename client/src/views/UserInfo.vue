@@ -1,35 +1,36 @@
 <template>
   <div class="user-info">
-    <el-tabs v-model="activeName"
-             tab-position="left">
-      <el-tab-pane label="个人详细信息"
-                   name="first">
-        <el-form :model="form"
-                 label-position="top">
+    <el-tabs v-model="activeName" tab-position="left">
+      <el-tab-pane label="个人详细信息" name="first">
+        <el-form :model="form" label-position="top">
           <el-form-item label="用户姓名:">
             <el-col :span="6">
-              <el-input v-model="form.userName"
-                        maxlength="11"
-                        autocomplete="off"
-                        style="width:200px" />
+              <el-input
+                v-model="form.userName"
+                maxlength="11"
+                autocomplete="off"
+                style="width:200px"
+              />
             </el-col>
           </el-form-item>
           <el-form-item label="用户手机号:">
             <el-col :span="6">
-              <el-input v-model="form.userPhone"
-                        maxlength="11"
-                        autocomplete="off"
-                        style="width:200px" />
+              <el-input
+                v-model="form.userPhone"
+                maxlength="11"
+                autocomplete="off"
+                style="width:200px"
+              />
             </el-col>
           </el-form-item>
-          <el-form-item label="登录账号:">
+          <!-- <el-form-item label="登录账号:">
             <el-col :span="5">
               <el-input v-model="form.userAccount"
                         maxlength="11"
                         autocomplete="off"
                         style="width:200px" />
             </el-col>
-          </el-form-item>
+          </el-form-item> -->
           <!-- <el-form-item label="省:">
             <el-col :span="5"
                     style="margin-left:40px">
@@ -59,63 +60,81 @@
           </el-form-item> -->
           <el-form-item label="收货地址：">
             <div>
-              <v-distpicker hide-area
-                            @province="onChangeProvince"
-                            @city="onChangeCity"></v-distpicker>
+              <v-distpicker
+                hide-area
+                @province="onChangeProvince"
+                @city="onChangeCity"
+              ></v-distpicker>
             </div>
             <div>
-              <el-input v-model="form.address"
-                        placeholder="详细地址"
-                        type="textarea"></el-input>
-
+              <el-input
+                v-model="form.address"
+                placeholder="详细地址"
+                type="textarea"
+              ></el-input>
             </div>
           </el-form-item>
-          <el-button type="success"
-                     icon="el-icon-edit"
-                     @click=";">确认修改</el-button>
+          <el-button type="success" icon="el-icon-edit" @click=";"
+            >确认修改</el-button
+          >
+          <el-button
+            class="updateCode-item"
+            type="danger"
+            icon="el-icon-edit"
+            @click="quit"
+            >退出登录</el-button
+          >
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="修改密码"
-                   name="second">
-        <el-form ref="dataForm"
-                 :model="code"
-                 :rules="rules"
-                 label-position="top">
-          <el-form-item label="新密码:"
-                        prop="userPassword"
-                        class="dialogShow">
+      <el-tab-pane label="修改密码" name="second">
+        <el-form
+          ref="dataForm"
+          :model="code"
+          :rules="rules"
+          label-position="top"
+        >
+          <el-form-item label="新密码:" prop="userPassword" class="dialogShow">
             <el-col :span="6">
-              <el-input v-model="code.userPassword"
-                        type="password"
-                        placeholder="请输入新密码"
-                        style="width:200px"
-                        autocomplete="off" />
+              <el-input
+                v-model="code.userPassword"
+                type="password"
+                placeholder="请输入新密码"
+                style="width:200px"
+                autocomplete="off"
+              />
             </el-col>
           </el-form-item>
-          <el-form-item label="确认密码:"
-                        prop="aginUserPassword"
-                        class="dialogShow">
+          <el-form-item
+            label="确认密码:"
+            prop="aginUserPassword"
+            class="dialogShow"
+          >
             <el-col :span="6">
-              <el-input v-model="code.aginUserPassword"
-                        type="password"
-                        placeholder="请输入确认新密码"
-                        style="width:200px"
-                        autocomplete="off" />
+              <el-input
+                v-model="code.aginUserPassword"
+                type="password"
+                placeholder="请输入确认新密码"
+                style="width:200px"
+                autocomplete="off"
+              />
             </el-col>
           </el-form-item>
         </el-form>
-        <el-button class="updateCode-item"
-                   type="success"
-                   icon="el-icon-edit"
-                   @click=";">确 定</el-button>
+        <el-button
+          class="updateCode-item"
+          type="success"
+          icon="el-icon-edit"
+          @click=";"
+          >确 定</el-button
+        >
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 <script>
-import VDistpicker from 'v-distpicker'
+import VDistpicker from "v-distpicker";
 export default {
-  data () {
+  data() {
     return {
       activeName: "first",
       form: {},
@@ -137,30 +156,42 @@ export default {
     };
   },
   components: { VDistpicker },
-  created () {
+  created() {
     this.form.userPassword = "";
     this.imgUrl = this.form.userHeadImg;
   },
   methods: {
-    onChangeProvince (data) {
-      if (data.value === '省') {
-        delete this.form.province
-        return
+    onChangeProvince(data) {
+      if (data.value === "省") {
+        delete this.form.province;
+        return;
       }
-      this.form.province = data.value
+      this.form.province = data.value;
     },
-    onChangeCity (data) {
-      if (data.value === '市') {
-        delete this.form.city
-        return
+    onChangeCity(data) {
+      if (data.value === "市") {
+        delete this.form.city;
+        return;
       }
-      this.form.city = data.value
+      this.form.city = data.value;
+    },
+    quit() {
+      this.axios
+        .get("/server/user/logout")
+        .then(response => {
+          console.log("logout response", response);
+          this.$store.commit("quit");
+          this.$router.push({ path: "/store" });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
 </script>
 <style>
-.user-info{
+.user-info {
   margin-left: 60px;
   margin-right: 60px;
   margin-top: 30px;

@@ -1,5 +1,5 @@
 <template>
-  <el-col :xs="24" :sm="12" :md="8">
+  <el-col :xs="24" :sm="12" :md="12" :lg="8">
     <el-card class="box-card">
       <img :src="imgData" :alt="name" class="book-img" />
       <div class="book-title">{{ name }}</div>

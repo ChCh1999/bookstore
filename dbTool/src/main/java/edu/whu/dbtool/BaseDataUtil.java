@@ -17,18 +17,15 @@ public class BaseDataUtil {
     public BaseDataUtil() {
         try {
             //加载驱动
-            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Class.forName("com.mysql.cj.jdbc.Driver");
             //getConnecting（）方法，用来连接mysql的数据库
-            conn = DriverManager.getConnection("jdbc:mysql://" + dbUrl + "?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true  ", dbUser, dbPW);
+//            conn = DriverManager.getConnection("jdbc:mysql://" + dbUrl + "?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true  ", dbUser, dbPW);
+            conn=DBUtil.getConnection();
             if (!conn.isClosed()) {
                 System.out.println("Succeeded connecting to the Database" + dbUrl);
             }
 
-        } catch (ClassNotFoundException e) {
-            //数据库驱动类异常处理
-            System.out.println("can't find the Driver!");
-            e.printStackTrace();
-        } catch (SQLException e) {
+        }  catch (SQLException e) {
             //数据库连接失败异常处理
             e.printStackTrace();
         } catch (Exception e) {

@@ -18,11 +18,11 @@
       <el-form-item label="确认密码" prop="pass2">
         <el-input v-model="SignupForm.pass2"  type="password" placeholder="确认密码"></el-input>
       </el-form-item>
-      <el-button type="danger" class="loginButton" @click="register"
+      <el-button type="danger" class="loginButton cardButton" @click="register"
         >注册</el-button
       >
       <p></p>
-      <el-button id="ReturnButton" type="warning" long @click="toLogin"
+      <el-button id="ReturnButton" class="cardButton" type="warning" long @click="toLogin"
         >返回登录</el-button
       >
     </el-form>

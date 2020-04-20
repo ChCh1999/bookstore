@@ -22,10 +22,10 @@
         <i class="iconfont icon-denglu" herf="#/login"></i>
         登录/注册
       </a>
-      <a href="#/store" v-else>
+      <a href="#/user-info" v-else>
         <!-- <span></span> -->
         <!-- <i class="iconfont icon-denglu" herf="#/login"></i> -->
-        已登录用户：
+        已登录：
         {{userAccount}}
       </a>
     </nav>

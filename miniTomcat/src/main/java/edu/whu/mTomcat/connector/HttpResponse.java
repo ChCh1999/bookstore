@@ -13,70 +13,30 @@ import java.util.*;
 public class HttpResponse implements HttpServletResponse {
 
   private String sessionid;
-
-  // the default buffer size
   private static final int BUFFER_SIZE = 1024;
   HttpRequest request;
   OutputStream output;
   PrintWriter writer;
   protected byte[] buffer = new byte[BUFFER_SIZE];
   protected int bufferCount = 0;
-  /**
-   * Has this response been committed yet?
-   */
   protected boolean committed = false;
-  /**
-   * The actual number of bytes written to this Response.
-   */
   protected int contentCount = 0;
-  /**
-   * The content length associated with this Response.
-   */
   protected int contentLength = -1;
-  /**
-   * The content type associated with this Response.
-   */
   protected String contentType = null;
-  /**
-   * The character encoding associated with this Response.
-   */
   protected String encoding = null;
 
-  /**
-   * The set of Cookies associated with this Response.
-   */
   protected ArrayList cookies = new ArrayList();
-  /**
-   * The HTTP headers explicitly added via addHeader(), but not including
-   * those to be added with setContentLength(), setContentType(), and so on.
-   * This collection is keyed by the header name, and the elements are
-   * ArrayLists containing the associated values that have been set.
-   */
   protected HashMap headers = new HashMap();
-  /**
-   * The date format we will use for creating date headers.
-   */
   protected final SimpleDateFormat format =
     new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz",Locale.US);
-  /**
-   * The error message set by <code>sendError()</code>.
-   */
   protected String message = getStatusMessage(HttpServletResponse.SC_OK);
-  /**
-   * The HTTP status code associated with this Response.
-   */
   protected int status = HttpServletResponse.SC_OK;
 
   public HttpResponse(OutputStream output) {
     this.output = output;
   }
 
-  /**
-   * call this method to send headers and response to the output
-   */
   public void finishResponse() {
-    // sendHeaders();
-    // Flush and close the appropriate output mechanism
     if (writer != null) {
       writer.flush();
       writer.close();
@@ -96,11 +56,6 @@ public class HttpResponse implements HttpServletResponse {
     return request.getProtocol();
   }
 
-  /**
-   * Returns a default status message for the specified HTTP status code.
-   *
-   * @param status The status code for which a message is desired
-   */
   protected String getStatusMessage(int status) {
     switch (status) {
       case SC_OK:
@@ -181,14 +136,6 @@ public class HttpResponse implements HttpServletResponse {
         return ("Unsupported Media Type");
       case SC_USE_PROXY:
         return ("Use Proxy");
-      case 207:       // WebDAV
-        return ("Multi-Status");
-      case 422:       // WebDAV
-        return ("Unprocessable Entity");
-      case 423:       // WebDAV
-        return ("Locked");
-      case 507:       // WebDAV
-        return ("Insufficient Storage");
       default:
         return ("HTTP Response Status " + status);
     }
@@ -197,13 +144,10 @@ public class HttpResponse implements HttpServletResponse {
   public OutputStream getStream() {
     return this.output;
   }
-  /**
-   * Send the HTTP response headers, if this has not already occurred.
-   */
+
   public void sendHeaders() throws IOException {
     if (isCommitted())
       return;
-    // Prepare a suitable output writer
     OutputStreamWriter osr = null;
     try {
       osr = new OutputStreamWriter(getStream(), getCharacterEncoding());
@@ -212,7 +156,7 @@ public class HttpResponse implements HttpServletResponse {
       osr = new OutputStreamWriter(getStream());
     }
     final PrintWriter outputWriter = new PrintWriter(osr);
-    // Send the "Status:" header
+
     outputWriter.print(this.getProtocol());
     outputWriter.print(" ");
     outputWriter.print(status);
@@ -221,73 +165,46 @@ public class HttpResponse implements HttpServletResponse {
       outputWriter.print(message);
     }
     outputWriter.print("\r\n");
-    // Send the content-length and content-type headers (if any)
+
     if (getContentType() != null) {
       outputWriter.print("Content-Type: " + getContentType() + "\r\n");
     }
     if (getContentLength() >= 0) {
       outputWriter.print("Content-Length: " + getContentLength() + "\r\n");
     }
-    // Send all specified headers (if any)
-    synchronized (headers) {
-      Iterator names = headers.keySet().iterator();
-      while (names.hasNext()) {
-        String name = (String) names.next();
-        ArrayList values = (ArrayList) headers.get(name);
-        Iterator items = values.iterator();
-        while (items.hasNext()) {
-          String value = (String) items.next();
-          outputWriter.print(name);
-          outputWriter.print(": ");
-          outputWriter.print(value);
-          outputWriter.print("\r\n");
-        }
-      }
-    }
-    // Add the session ID cookie if necessary
-/*    HttpServletRequest hreq = (HttpServletRequest) request.getRequest();
-    HttpSession session = hreq.getSession(false);
-    if ((session != null) && session.isNew() && (getContext() != null)
-      && getContext().getCookies()) {
-      Cookie cookie = new Cookie("JSESSIONID", session.getId());
-      cookie.setMaxAge(-1);
-      String contextPath = null;
-      if (context != null)
-        contextPath = context.getPath();
-      if ((contextPath != null) && (contextPath.length() > 0))
-        cookie.setPath(contextPath);
-      else
-
-      cookie.setPath("/");
-      if (hreq.isSecure())
-        cookie.setSecure(true);
-      addCookie(cookie);
-    }
-*/
-    // Send all specified cookies (if any)
-    synchronized (cookies) {
-      Iterator items = cookies.iterator();
+    Iterator names = headers.keySet().iterator();
+    while (names.hasNext()) {
+      String name = (String) names.next();
+      ArrayList values = (ArrayList) headers.get(name);
+      Iterator items = values.iterator();
       while (items.hasNext()) {
-        Cookie cookie = (Cookie) items.next();
-        outputWriter.print(CookieTools.getCookieHeaderName(cookie));
+        String value = (String) items.next();
+        outputWriter.print(name);
         outputWriter.print(": ");
-        outputWriter.print(CookieTools.getCookieHeaderValue(cookie));
+        outputWriter.print(value);
         outputWriter.print("\r\n");
+
       }
     }
 
-    // Send a terminating blank line to mark the end of the headers
+
+    Iterator items = cookies.iterator();
+    while (items.hasNext()) {
+      Cookie cookie = (Cookie) items.next();
+      outputWriter.print(CookieTools.getCookieHeaderName(cookie));
+      outputWriter.print(": ");
+      outputWriter.print(CookieTools.getCookieHeaderValue(cookie));
+      outputWriter.print("\r\n");
+    }
+
     outputWriter.print("\r\n");
     outputWriter.flush();
-
     committed = true;
   }
 
   public void setRequest(HttpRequest request) {
     this.request = request;
   }
-
-  /* This method is used to serve a static page */
 
 
   public void write(int b) throws IOException {
@@ -297,9 +214,6 @@ public class HttpResponse implements HttpServletResponse {
     contentCount++;
   }
 
-  public void write(byte b[]) throws IOException {
-    write(b, 0, b.length);
-  }
 
   public void write(byte b[], int off, int len) throws IOException {
     // If the whole thing fits in the buffer, just put it there
@@ -330,8 +244,6 @@ public class HttpResponse implements HttpServletResponse {
   public void addCookie(Cookie cookie) {
     if (isCommitted())
       return;
-  //  if (included)
-    //        return;     // Ignore any call from an included servlet
     synchronized (cookies) {
       cookies.add(cookie);
     }
@@ -340,16 +252,12 @@ public class HttpResponse implements HttpServletResponse {
   public void addDateHeader(String name, long value) {
     if (isCommitted())
       return;
-//    if (included)
-  //          return;     // Ignore any call from an included servlet
     addHeader(name, format.format(new Date(value)));
   }
 
   public void addHeader(String name, String value) {
     if (isCommitted())
       return;
-//        if (included)
-  //          return;     // Ignore any call from an included servlet
     synchronized (headers) {
       ArrayList values = (ArrayList) headers.get(name);
       if (values == null) {
@@ -364,8 +272,6 @@ public class HttpResponse implements HttpServletResponse {
   public void addIntHeader(String name, int value) {
     if (isCommitted())
       return;
-//    if (included)
-  //    return;     // Ignore any call from an included servlet
     addHeader(name, "" + value);
   }
 
@@ -392,7 +298,6 @@ public class HttpResponse implements HttpServletResponse {
   }
 
   public void flushBuffer() throws IOException {
-    //committed = true;
     if (bufferCount > 0) {
       try {
         output.write(buffer, 0, bufferCount);
@@ -435,9 +340,6 @@ public class HttpResponse implements HttpServletResponse {
 
   }
 
-  /**
-   * Has the output of this response already been committed?
-   */
   public boolean isCommitted() {
     return (committed);
   }
@@ -481,16 +383,12 @@ public class HttpResponse implements HttpServletResponse {
   public void setDateHeader(String name, long value) {
     if (isCommitted())
       return;
-//    if (included)
-  //    return;     // Ignore any call from an included servlet
     setHeader(name, format.format(new Date(value)));
   }
 
   public void setHeader(String name, String value) {
     if (isCommitted())
       return;
-//    if (included)
-  //    return;     // Ignore any call from an included servlet
     ArrayList values = new ArrayList();
     values.add(value);
     synchronized (headers) {
@@ -516,18 +414,12 @@ public class HttpResponse implements HttpServletResponse {
   public void setIntHeader(String name, int value) {
     if (isCommitted())
       return;
-    //if (included)
-      //return;     // Ignore any call from an included servlet
     setHeader(name, "" + value);
   }
 
   public void setLocale(Locale locale) {
     if (isCommitted())
       return;
-    //if (included)
-      //return;     // Ignore any call from an included servlet
-
-   // super.setLocale(locale);
     String language = locale.getLanguage();
     if ((language != null) && (language.length() > 0)) {
       String country = locale.getCountry();

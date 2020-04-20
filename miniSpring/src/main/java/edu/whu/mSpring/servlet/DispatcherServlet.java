@@ -57,10 +57,6 @@ public class DispatcherServlet extends HttpServlet {
 
     private void doDispatch(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String url =req.getRequestURI();
-        String contextPath = req.getContextPath();
-
-        //拼接url并把多个/替换成一个
-        url=url.replace(contextPath, "").replaceAll("/+", "/");
 
         if(!SpringApplication.handlerMappingMethod.containsKey(url)
                 || !SpringApplication.handlerMappingMethod.get(url).containsKey(convertMethod(req.getMethod()))){

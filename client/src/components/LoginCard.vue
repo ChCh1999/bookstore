@@ -1,32 +1,35 @@
 <template>
   <el-card class="loginCard">
-    <p id="UserLogin"
-       style="text-align: center">用户登录</p>
-    <el-form style="position: relative;top: 20px;"
-             :model="loginForm"
-             ref="loginForm"
-             label-width="40px"
-             :rules="rules">
-      <el-form-item label="账号"
-                    prop="account">
-        <el-input v-model="loginForm.account"
-                  placeholder="请输入账号"
-                  class="inputBox"></el-input>
+    <p id="UserLogin" style="text-align: center">用户登录</p>
+    <el-form
+      style="position: relative;top: 20px;"
+      :model="loginForm"
+      ref="loginForm"
+      label-width="40px"
+      :rules="rules"
+    >
+      <el-form-item label="账号" prop="account">
+        <el-input
+          v-model="loginForm.account"
+          placeholder="请输入账号"
+          class="inputBox"
+        ></el-input>
       </el-form-item>
-      <el-form-item label="密码"
-                    prop="pass">
-        <el-input v-model="loginForm.pass"
-                  type="password"
-                  placeholder="请输入密码"
-                  class="inputBox pwdBox"></el-input>
+      <el-form-item label="密码" prop="pass">
+        <el-input
+          v-model="loginForm.pass"
+          type="password"
+          placeholder="请输入密码"
+          class="inputBox pwdBox"
+        ></el-input>
       </el-form-item>
-      <el-button type="warning"
-                 class="loginButton"
-                 @click="login">登录</el-button>
+      <el-button type="warning" class="loginButton" @click="login"
+        >登录</el-button
+      >
       <p></p>
-      <el-button type="danger"
-                 @click="toSetUp"
-                 class="signupButton">注册</el-button>
+      <el-button type="danger" @click="toSetUp" class="signupButton"
+        >注册</el-button
+      >
     </el-form>
   </el-card>
 </template>
@@ -41,7 +44,7 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     // 检查账号
     var checkAccount = (rule, value, callback) => {
       if (!value) {
@@ -76,23 +79,29 @@ export default {
     };
   },
   methods: {
-    toSetUp: function () {
+    toSetUp: function() {
       this.$emit("listen", "setUpCard");
     },
-    login: function () {
-      console.log("try login")
+    login: function() {
+      var cur = this;
+      console.log("try login");
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          // console.log(cur.loginForm.account, cur.loginForm.pass);
           this.axios
             .post("/server/user/login", {
-              account: this.account,
-              password: this.password
+              account: cur.loginForm.account,
+              password: cur.loginForm.pass
             })
             .then(response => {
-              console.log(this.account);
-              this.$store.commit('successLogin', this.account)
-              this.$router.push({ path: "/store" });
-              console.log(this.$store.getters.ifLogin, this.$store.getters.userAccount)
+              console.log('login response', response);
+              if (response.status === 200) {
+                // console.log(cur.loginForm.account)
+                cur.$store.commit("successLogin", cur.loginForm.account);
+                cur.$router.push({ path: "/store" });
+              } else {
+                alert("账号或密码错误");
+              }
             })
             .catch(error => {
               console.log(error);
@@ -102,7 +111,7 @@ export default {
         }
       });
     },
-    toGetBackPassword: function () {
+    toGetBackPassword: function() {
       this.$emit("listen", "getBackPassword");
     }
   }
@@ -123,7 +132,6 @@ export default {
   left: 65%;
   margin-top: 60px;
   opacity: 0.9;
-  text-align: center;
 }
 .loginButton {
   text-align: center;

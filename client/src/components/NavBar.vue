@@ -17,7 +17,7 @@
           </el-badge>
         </li>
       </ul>
-      <a href="#/login" v-if='ifLogin'>
+      <a href="#/login" v-if='!ifLogin'>
         <!-- <span></span> -->
         <i class="iconfont icon-denglu" herf="#/login"></i>
         登录/注册
@@ -40,6 +40,7 @@ export default {
       return this.$store.getters.totalOrderCount
     },
     ifLogin () {
+      console.log('ifLogin', this.$store.getters.ifLogin)
       return this.$store.getters.ifLogin
     },
     userAccount () {

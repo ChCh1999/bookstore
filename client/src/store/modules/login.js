@@ -1,12 +1,13 @@
 const state = {
   login: false,
-  userAccount: ""
+  userAccount: "未登录"
 };
 
 const mutations = {
   successLogin: (state, account) => {
     state.userAccount = account;
     state.login = true;
+    console.log(account)
   },
   quit: (state) => {
     state.userAccount = ''

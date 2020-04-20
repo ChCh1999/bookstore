@@ -24,7 +24,7 @@ const mutations = {
     },
 
     clearCart () {
-        state.bookOrders.length = 0
+        state.bookOrders = []
     }
 }
 

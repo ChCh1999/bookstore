@@ -1,12 +1,13 @@
 <template>
   <el-row class="loginRow">
-    <img id="imgLogin"
-         src="../assets/book.png" />
+    <img id="imgLogin" src="../assets/book.png" />
     <transition mode="out-in">
-      <component class="card"
-                 v-bind:is="comName"
-                 :componentName="comName"
-                 v-on:listen="changeCard"></component>
+      <component
+        class="card"
+        v-bind:is="comName"
+        :componentName="comName"
+        v-on:listen="changeCard"
+      ></component>
     </transition>
   </el-row>
 </template>
@@ -20,13 +21,13 @@ export default {
     loginCard,
     setUpCard
   },
-  data: function () {
+  data: function() {
     return {
       comName: "loginCard"
     };
   },
   methods: {
-    changeCard: function (componentName) {
+    changeCard: function(componentName) {
       this.comName = componentName;
     }
   }
@@ -45,6 +46,9 @@ export default {
   bottom: 0;
   margin-top: 0%;
   margin-bottom: 0%;
+}
+.card {
+  /* background-color: rgb(190, 227, 241); */
 }
 #imgLogin {
   position: absolute;

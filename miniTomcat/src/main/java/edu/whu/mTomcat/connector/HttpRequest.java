@@ -75,7 +75,6 @@ public class HttpRequest implements HttpServletRequest {
         String encoding = getCharacterEncoding();
         if (encoding == null)
             encoding = "ISO-8859-1";
-
         String queryString = getQueryString();
         try {
             RequestUtil.parseParameters(results, queryString, encoding);
@@ -83,7 +82,6 @@ public class HttpRequest implements HttpServletRequest {
         catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
         // Parse any parameters specified in the input stream
         String contentType = getContentType();
         if (contentType == null)
@@ -93,7 +91,6 @@ public class HttpRequest implements HttpServletRequest {
                 int max = getContentLength();
                 int len = 0;
                 char buf[] = new char[getContentLength()];
-                ServletInputStream is = getInputStream();
                 while (len < max) {
                     int next = input.read(buf, len, max - len);
                     if (next < 0) {
@@ -101,11 +98,9 @@ public class HttpRequest implements HttpServletRequest {
                     }
                     len += next;
                 }
-//                input.close();
                 if (len < max) {
                     throw new RuntimeException("Content length mismatch");
                 }
-
                 Map body = new HashMap();
                 String str = new String(buf);
                 if ("application/x-www-form-urlencoded".equals(contentType)) {
@@ -114,7 +109,6 @@ public class HttpRequest implements HttpServletRequest {
                     body = (Map) JSON.parse(str);
                 }
                 setBody(body);
-
             } catch (IOException e) {
                 throw new RuntimeException("Content read fail");
             }

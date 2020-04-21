@@ -187,7 +187,6 @@ public class HttpResponse implements HttpServletResponse {
       }
     }
 
-
     Iterator items = cookies.iterator();
     while (items.hasNext()) {
       Cookie cookie = (Cookie) items.next();

@@ -16,11 +16,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class DispatcherServlet extends HttpServlet {
@@ -60,7 +61,6 @@ public class DispatcherServlet extends HttpServlet {
 
     private void doDispatch(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String url =req.getRequestURI();
-
         if(!SpringApplication.handlerMappingMethod.containsKey(url)
                 || !SpringApplication.handlerMappingMethod.get(url).containsKey(convertMethod(req.getMethod()))){
             // TODO send error msg
@@ -71,25 +71,15 @@ public class DispatcherServlet extends HttpServlet {
         }
 
         Method method =SpringApplication.handlerMappingMethod.get(url).get(convertMethod(req.getMethod()));
-
         //获取方法的参数列表
         Class<?>[] parameterTypes = method.getParameterTypes();
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-
-        //获取请求的参数
-        Map<String, String[]> parameterMap = req.getParameterMap();
-
         //保存参数值
         Object [] paramValues= new Object[parameterTypes.length];
-
-        //方法的参数列表
         for (int i = 0; i<parameterTypes.length; i++){
             //根据参数名称，做某些处理
             String requestParam = parameterTypes[i].getSimpleName();
-
-
             if (requestParam.equals("HttpServletRequest")){
-                //参数类型已明确，这边强转类型
                 paramValues[i]=req;
             }
             else if (requestParam.equals("HttpServletResponse")){
@@ -103,6 +93,7 @@ public class DispatcherServlet extends HttpServlet {
             }
         }
         Object result = null;
+        Exception exception = null;
         //利用反射机制来调用
         try {
             // 拦截器
@@ -121,13 +112,21 @@ public class DispatcherServlet extends HttpServlet {
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             e.printStackTrace();
+            exception = e;
         }
 
         HttpResponse httpResponse = (HttpResponse)resp;
         httpResponse.sendHeaders();
-        if(result == null) return;
         PrintWriter writer = httpResponse.getWriter();
-        if(result.getClass() == String.class){
+        if(result == null || exception != null) {
+            exception.printStackTrace(writer);
+//            BufferedReader br = new BufferedReader(new InputStreamReader
+//                    (new ByteArrayInputStream(exception.pr
+//                            .getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8));
+//            String line = null;
+//            while ((line = br.readLine()) != null) writer.print(line+"\r\n");
+        }
+        else if(result.getClass() == String.class){
             writer.println(((String)result));
         } else {
             writer.println(JSON.toJSONString(result));

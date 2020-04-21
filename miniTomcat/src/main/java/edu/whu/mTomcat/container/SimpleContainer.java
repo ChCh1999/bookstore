@@ -76,7 +76,8 @@ public class SimpleContainer implements Container {
     public static final String WEB_ROOT =
             System.getProperty("user.dir") + File.separator  + "webroot";
 
-    public void invoke(ServletRequest request, ServletResponse response) throws IOException, ServletException {
+    public void invoke(ServletRequest request, ServletResponse response)
+            throws IOException, ServletException {
         if(servlet != null) {
             servlet.service(request, response);
         }

@@ -159,9 +159,10 @@ export default {
   },
   methods: {
     changeUserInfo () {
-      console.log(this.form);
+      // console.log(this.form);
+      var cur = this;
       this.axios.post("/server/user/update", this.form).then(response => {
-        this.$message({
+        cur.$message({
           message: '修改成功！',
           type: 'success',
           showClose: true
@@ -171,6 +172,7 @@ export default {
       })
     },
     changeUserPwd () {
+       var cur = this;
       this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           this.axios.post("/server/user/update", {
@@ -210,7 +212,7 @@ export default {
       this.axios
         .get("/server/user/logout")
         .then(response => {
-          console.log(response);
+          console.log("logout response", response);
         })
         .catch(error => {
           console.log(error);
@@ -241,7 +243,7 @@ export default {
         }
       )
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         this.form = response.data;
         // if (form.province !== undefined && form.province !== '') {
         //   this.playceHolders.province = form.province;

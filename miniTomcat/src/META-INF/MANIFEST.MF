@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Main-Class: edu.whu.mSpring.ApplicationStartUp
+Class-Path: protobuf-java-3.6.1.jar fastjson-1.2.47.jar druid-1.1.22.jar
+  javax.servlet-api-3.1.0.jar mysql-connector-java-8.0.15.jar
+

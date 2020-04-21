@@ -326,4 +326,7 @@ export default {
   /* width: 30%;*/
   height: 100%;
 }
+.avatar-uploader{
+  max-width: 80%;
+}
 </style>

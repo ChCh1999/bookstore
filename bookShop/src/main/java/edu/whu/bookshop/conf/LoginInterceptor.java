@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 @Interceptor
 public class LoginInterceptor implements HandlerInterceptor {
 
-    private static String[] matchs = {"/user/login","/book/all","/book/add","/book/info","/book/updata","/user/register","/file/get","/file/upload"};
+    private static String[] matchs = {"/user/login","/book/all","/book/info","/user/register","/file/get"};
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp) throws Exception {

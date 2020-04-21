@@ -49,7 +49,10 @@ const routes = [
   },
   {
     path: '/manager',
-    component: Manager
+    component: Manager,
+    meta: {
+      requireAuth: true
+    }
   }
 ];
 

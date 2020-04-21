@@ -84,7 +84,7 @@ export default {
     },
     login: function() {
       var cur = this;
-      console.log("try login", this.loginForm);
+      // console.log("try login", this.loginForm);
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           // console.log(cur.loginForm.account, cur.loginForm.pass);

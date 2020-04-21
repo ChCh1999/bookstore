@@ -26,7 +26,7 @@ public class SpringApplication {
     public static List<HandlerInterceptor> interceptors = new ArrayList<>();
 
     public void run(Class primarySource){
-        System.out.println("asd");
+        System.out.println("SpringApplication run ......");
         // IOC容器初始化，自动注入
         doScanner(primarySource.getPackage().toString().split(" ")[1]);
         doInstance();
@@ -38,10 +38,7 @@ public class SpringApplication {
         SimpleContainer container = new SimpleContainer(new DispatcherServlet());
         connector.setContainer(container);
         try {
-//            connector.initialize();
             Thread thread = connector.start();
-
-            // make the application wait until we press any key.
             thread.join();
         }
         catch (Exception e) {
@@ -69,9 +66,6 @@ public class SpringApplication {
 
 
     private void doInstance() {
-        if (classNames.isEmpty()) {
-            return;
-        }
         for (String className : classNames) {
             try {
                 Class<?> clazz =Class.forName(className);
@@ -88,14 +82,11 @@ public class SpringApplication {
                 else if(clazz.isAnnotationPresent(Interceptor.class)){
                     Class<?>[] interfaces = clazz.getInterfaces();
                     // 必须实现HandlerInterceptor接口
-                    boolean flag = false;
                     for(Class i : interfaces){
                         if(i == HandlerInterceptor.class){
-                            flag = true;
+                            interceptors.add((HandlerInterceptor) clazz.newInstance());
+                            break;
                         }
-                    }
-                    if(flag){
-                        interceptors.add((HandlerInterceptor) clazz.newInstance());
                     }
                 }
                 else{
@@ -118,10 +109,8 @@ public class SpringApplication {
                     Autowired annotation = field.getAnnotation(Autowired.class);
                     field.setAccessible(true);
                     try {
-                        String s = annotation.name();
                         Object object = iocContainer.get(annotation.name());
                         if(object == null){
-                            String ss = field.getType().getName();
                             object = iocContainer.get(field.getType().getName());
                         }
                         field.set(instance,object);
@@ -136,9 +125,6 @@ public class SpringApplication {
     }
 
     private void doHandlerMapping() {
-        if (iocContainer.isEmpty()) {
-            return;
-        }
         try {
             for (Map.Entry<String, Object> entry : iocContainer.entrySet()) {
                 Class<?> clazz = entry.getValue().getClass();
@@ -146,7 +132,6 @@ public class SpringApplication {
                 if (!clazz.isAnnotationPresent(Controller.class)) {
                     continue;
                 }
-
                 //拼url时,是controller头的url拼上方法上的url
                 String baseUrl = "";
                 if (clazz.isAnnotationPresent(RequestMapping.class)) {
@@ -171,17 +156,10 @@ public class SpringApplication {
                         requestMethodMethodMap.put(requestMethod, method);
                     }
                     handlerMappingMethod.put(url, requestMethodMethodMap);
-
                     // 填充实体映射
-                    Component component = clazz.getAnnotation(Component.class);
-                    if(component.name().equals("")){
-                        handlerMappingController.put(url,iocContainer.get(clazz.getName()));
-                    } else {
-                        handlerMappingController.put(url, iocContainer.get(clazz.getAnnotation(Component.class).name()));
-                    }
+                    handlerMappingController.put(url,entry.getValue());
                     System.out.println(url + "," + method);
                 }
-
             }
 
         } catch (Exception e) {

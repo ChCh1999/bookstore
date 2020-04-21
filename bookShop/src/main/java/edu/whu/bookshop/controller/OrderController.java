@@ -62,18 +62,14 @@ public class OrderController {
     @RequestMapping(value = "/addbook", method = RequestMethod.POST)
     public String addBook(HttpServletRequest request, HttpServletResponse response
             , @RequestBody Map data) {
-        try {
-            Map orderMap = new HashMap();
-            orderMap.put("bookID", data.get("bookid"));
-            orderMap.put("count", data.get("count"));
-            Map session = (Map) SessionHelper.getSession(request.getRequestedSessionId());
-            orderMap.put("userAccount", session.get("account"));
-            order o = new orderBuilder().build(orderMap);
-            if (dataTool.insertOrder(o)) {
-                return "success";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        Map orderMap = new HashMap();
+        orderMap.put("bookID", data.get("bookid"));
+        orderMap.put("count", data.get("count"));
+        Map session = (Map) SessionHelper.getSession(request.getRequestedSessionId());
+        orderMap.put("userAccount", session.get("account"));
+        order o = new orderBuilder().build(orderMap);
+        if (dataTool.insertOrder(o)) {
+            return "success";
         }
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return "failed";
@@ -82,14 +78,11 @@ public class OrderController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String deleteBook(HttpServletRequest request, HttpServletResponse response
             , @RequestBody Map data) {
-        try {
-            dataTool.deleteOrderByID(Integer.parseInt((String) data.get("orderid")));
+        if(dataTool.deleteOrderByID(Integer.parseInt(data.get("orderid").toString())) > 0){
             return "success";
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            return "failed, don't delete any order";
         }
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        return "failed";
     }
 
 }

@@ -102,12 +102,11 @@ public class HttpProcessor implements Runnable {
             else if (name.toLowerCase().equals("content-type")) {
                 request.setContentType(value);
             }
-        } //end while
+        }
     }
 
     private void parseRequest(BufferedReader input)
             throws IOException, ServletException {
-
         String requestLineStr = input.readLine();
         if(requestLineStr == null) {
             throw new SecurityException("invalid request line");
@@ -128,7 +127,6 @@ public class HttpProcessor implements Runnable {
             url = url.substring(0,paramIndex);
         }
         request.setRequestURI(url);
-
     }
 
     protected static SimpleDateFormat format =

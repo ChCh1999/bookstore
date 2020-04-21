@@ -3,6 +3,7 @@ package edu.whu.mTomcat.connector;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+// 包装一下PrintWrite，保证每次print之后都将输出流刷新一下，保证数据的输出
 public class ResponseWriter extends PrintWriter {
   public ResponseWriter(OutputStreamWriter writer) {
     super(writer);

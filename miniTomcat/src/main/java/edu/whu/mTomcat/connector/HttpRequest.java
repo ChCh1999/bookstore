@@ -108,11 +108,6 @@ public class HttpRequest implements HttpServletRequest {
 
                 Map body = new HashMap();
                 String str = new String(buf);
-//                String linename = new String(str.getBytes("ISO-8859-1"),"UTF-8");
-//                BASE64Decoder decoder = new BASE64Decoder();
-//                byte[] bytes = decoder.decodeBuffer(str);
-//                str = new String(bytes);
-//                str = URLDecoder.decode(str,"utf-8");
                 if ("application/x-www-form-urlencoded".equals(contentType)) {
                     RequestUtil.parseParameters(body, str, encoding);
                 } else if (contentType.contains("application/json")) {
@@ -494,6 +489,7 @@ public class HttpRequest implements HttpServletRequest {
     }
 
     public Map getBody() {
+        parseParameters();
         return body;
     }
 

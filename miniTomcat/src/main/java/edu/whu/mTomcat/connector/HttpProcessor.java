@@ -17,8 +17,6 @@ public class HttpProcessor implements Runnable {
     public HttpProcessor(HttpConnector connector, int id) {
         super();
         this.connector = connector;
-        this.id = id;
-        this.serverPort = connector.getPort();
         this.threadName =
                 "HttpProcessor[" + connector.getPort() + "][" + id + "]";
 
@@ -26,25 +24,14 @@ public class HttpProcessor implements Runnable {
 
     private boolean available = false;
     private HttpConnector connector = null;
-    private int id = 0;
-    private static final String match =
-            ";" + "jsessionid" + "=";
     private HttpRequest request = null;
     private HttpResponse response = null;
-    private int serverPort = 0;
     private Socket socket = null;
     private boolean started = false;
     private boolean stopped = false;
     private Thread thread = null;
     private String threadName = null;
     private Object threadSync = new Object();
-    private boolean keepAlive = false;
-    private boolean sendAck = false;
-    private static final byte[] ack =
-            (new String("HTTP/1.1 100 Continue\r\n\r\n")).getBytes();
-    private static final byte[] CRLF = (new String("\r\n")).getBytes();
-    private static int PROCESSOR_IDLE = 0;
-
     public String toString() {
         return (this.threadName);
     }
@@ -82,12 +69,6 @@ public class HttpProcessor implements Runnable {
     private void log(String message) {
         System.out.println(threadName + " " + message);
     }
-
-//    private void parseConnection(Socket socket) {
-//        request.setInet(socket.getInetAddress());
-//        request.setServerPort(serverPort);
-//        request.setSocket(socket);
-//    }
 
     private void parseHeaders(BufferedReader input)
             throws IOException, ServletException {
@@ -160,16 +141,10 @@ public class HttpProcessor implements Runnable {
 
 
     private void process(Socket socket) throws IOException {
-//        SocketInputStream input = null;
-        OutputStream output = null;
-        BufferedReader bufferedReader;
-        InputStream input;
-            InputStream inputStream=socket.getInputStream();//得到一个输入流，接收客户端传递的信息
-            InputStreamReader inputStreamReader=new InputStreamReader(inputStream, StandardCharsets.ISO_8859_1);//提高效率，将自己字节流转为字符流
-             bufferedReader =new BufferedReader(inputStreamReader);//加入缓冲区
-//            input = new SocketInputStream(socket.getInputStream(),
-//                    connector.getBufferSize());
-            output = socket.getOutputStream();
+        InputStream inputStream=socket.getInputStream();//得到一个输入流，接收客户端传递的信息
+        InputStreamReader inputStreamReader=new InputStreamReader(inputStream, StandardCharsets.ISO_8859_1);//提高效率，将自己字节流转为字符流
+        BufferedReader bufferedReader =new BufferedReader(inputStreamReader);//加入缓冲区
+        OutputStream output = socket.getOutputStream();
 
         try {
             request = new HttpRequest(bufferedReader);
@@ -180,8 +155,6 @@ public class HttpProcessor implements Runnable {
 
             parseRequest(bufferedReader);
             parseHeaders(bufferedReader);
-            request.parseParameters();
-//            parseConnection(socket);
             connector.getContainer().invoke(request, response);
 
         } catch (Exception e) {
@@ -201,8 +174,6 @@ public class HttpProcessor implements Runnable {
                 e.printStackTrace();
             }
             try {
-//                shutdownInput(input);
-//                while (!bufferedReader.readLine().equals(""))
                 response.finishResponse();
                 request.finishRequest();
                 if (output != null)
@@ -211,18 +182,6 @@ public class HttpProcessor implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-
-    protected void shutdownInput(InputStream input) {
-        try {
-            int available = input.available();
-            if (available > 0) {
-                input.skip(available);
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
         }
     }
 

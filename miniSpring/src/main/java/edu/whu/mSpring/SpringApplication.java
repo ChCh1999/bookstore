@@ -39,10 +39,10 @@ public class SpringApplication {
         connector.setContainer(container);
         try {
 //            connector.initialize();
-            connector.start();
+            Thread thread = connector.start();
 
             // make the application wait until we press any key.
-            System.in.read();
+            thread.join();
         }
         catch (Exception e) {
             e.printStackTrace();

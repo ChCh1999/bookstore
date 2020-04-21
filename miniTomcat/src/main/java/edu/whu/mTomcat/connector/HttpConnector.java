@@ -141,8 +141,8 @@ public class HttpConnector implements Runnable {
     }
 
 
-    public void start() throws IOException {
-        if(started) return;
+    public Thread start() throws IOException {
+        if(started) return null;
         serverSocket = new ServerSocket(port,acceptCount);
         threadName = "HttpConnector[" + port + "]";
         started = true;
@@ -157,6 +157,7 @@ public class HttpConnector implements Runnable {
             HttpProcessor processor = newProcessor();
             recycle(processor);
         }
+        return thread;
     }
 
 }

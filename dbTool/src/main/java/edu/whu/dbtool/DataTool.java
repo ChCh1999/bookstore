@@ -28,9 +28,9 @@ public class DataTool {
                         rs.getString("account"),
                         rs.getString("name"),
                         rs.getString("password"),
+                        rs.getString("address"),
                         rs.getString("province"),
                         rs.getString("city"),
-                        rs.getString("address"),
                         rs.getString("info"),
                         rs.getFloat("money")
                 );

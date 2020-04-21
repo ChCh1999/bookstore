@@ -3,10 +3,12 @@ package edu.whu.bookshop.controller;
 import edu.whu.dbtool.DataTool;
 import edu.whu.dbtool.data.EntityBuilder;
 import edu.whu.dbtool.data.user;
+import edu.whu.dbtool.data.userBuilder;
 import edu.whu.mSpring.annotation.*;
 import edu.whu.mSpring.servlet.SessionHelper;
 import edu.whu.mTomcat.connector.HttpRequest;
 import edu.whu.mTomcat.connector.HttpResponse;
+import javafx.animation.PauseTransitionBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +26,23 @@ public class UserController {
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public Object getUserInfo(HttpServletRequest request) {
-        return SessionHelper.getSession(request.getRequestedSessionId());
+        Map data = (Map)SessionHelper.getSession(request.getRequestedSessionId());
+        Map param = new HashMap();
+        param.put("account",data.get("account"));
+        List<user> u = dataTool.searchUser(param);
+        return u.get(0);
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String update(HttpServletRequest request, @RequestBody Map data,HttpServletResponse response){
+        Map session = (Map)SessionHelper.getSession(request.getRequestedSessionId());
+        data.put("account",session.get("account"));
+        user u = new userBuilder().build(data);
+        if(dataTool.updateUser(u)){
+            return "success";
+        }
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return "failed";
     }
 
 
@@ -35,7 +53,7 @@ public class UserController {
         if (dataTool.insertUser(new user(account, pwd))) {
             return "success";
         }
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return "failed";
     }
 
@@ -50,11 +68,11 @@ public class UserController {
         if (users != null && users.size() > 0) {
             HttpResponse httpResponse = (HttpResponse) response;
             UUID uuid = UUID.randomUUID();
-            SessionHelper.putSession(uuid.toString(), users.get(0));
+            SessionHelper.putSession(uuid.toString(), users.get(0).genDataMap());
             httpResponse.setSeesion(uuid.toString());
             return "login success";
         } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return "login failed";
         }
     }

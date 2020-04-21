@@ -2,10 +2,7 @@ package edu.whu.bookshop.controller;
 
 
 import edu.whu.dbtool.DataTool;
-import edu.whu.dbtool.data.EntityBuilder;
-import edu.whu.dbtool.data.book;
-import edu.whu.dbtool.data.order;
-import edu.whu.dbtool.data.user;
+import edu.whu.dbtool.data.*;
 import edu.whu.mSpring.annotation.*;
 import edu.whu.mSpring.servlet.SessionHelper;
 
@@ -25,9 +22,9 @@ public class OrderController {
 
     @RequestMapping(value = "/myorder",method = RequestMethod.GET)
     public Object getMyOrder(HttpServletRequest request){
-        user u = (user) SessionHelper.getSession(request.getRequestedSessionId());
+        Map u = (Map) SessionHelper.getSession(request.getRequestedSessionId());
         Map<String,Object> param = new HashMap<>();
-        param.put("userAccount",u.getAccount());
+        param.put("userAccount",u.get("account"));
         List<order> orders = dataTool.searchOrder(param);
         List<Object> results = new ArrayList<>();
         for(order o : orders){
@@ -50,11 +47,11 @@ public class OrderController {
             ,@RequestBody Map data){
         try {
             Map orderMap = new HashMap();
-            orderMap.put("bookid",data.get("bookid"));
+            orderMap.put("bookID",data.get("bookid"));
             orderMap.put("count",data.get("count"));
             Map session = (Map) SessionHelper.getSession(request.getRequestedSessionId());
             orderMap.put("userAccount",session.get("account"));
-            order o = new EntityBuilder<order>().build(orderMap);
+            order o = new orderBuilder().build(orderMap);
             if(dataTool.insertOrder(o)){
                 return "success";
             }

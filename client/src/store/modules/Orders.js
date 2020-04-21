@@ -1,20 +1,20 @@
 const state = {
     bookOrders: [
-        {
-            name: 'name1',
-            price: 32,
-            count: 2
-        },
-        {
-            name: 'name2',
-            price: 41,
-            count: 3
-        },
-        {
-            name: 'name3',
-            price: 21,
-            count: 5
-        }
+        // {
+        //     name: 'name1',
+        //     price: 32,
+        //     count: 2
+        // },
+        // {
+        //     name: 'name2',
+        //     price: 41,
+        //     count: 3
+        // },
+        // {
+        //     name: 'name3',
+        //     price: 21,
+        //     count: 5
+        // }
     ]
 }
 
@@ -23,8 +23,13 @@ const mutations = {
         state.bookOrders.splice(index, 1)
     },
 
-    clearCart () {
+    clearCart (state) {
         state.bookOrders = []
+    },
+
+    addOrder (state, order) {
+        console.log("add order name: " + order.name)
+        state.bookOrders.push(order)
     }
 }
 

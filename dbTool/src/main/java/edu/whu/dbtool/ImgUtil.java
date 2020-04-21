@@ -101,7 +101,9 @@ public class ImgUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println();
+        String ss = encoder.encode(new String("阿萨德").getBytes());
+
+        System.out.println(ss);
 //        String test = ImgUtil.Img2Base64("res/test.png");
 //        System.out.println(test);
 //        ImgUtil.Base642Img(test);

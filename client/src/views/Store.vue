@@ -6,6 +6,7 @@
           pageIndex * 12
         )"
                 :key="index"
+                :id="book.id"
                 :name="book.name"
                 :author="book.publisher"
                 :desc="book.info"

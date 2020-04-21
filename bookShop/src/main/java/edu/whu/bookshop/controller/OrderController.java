@@ -22,9 +22,9 @@ public class OrderController {
 
     @RequestMapping(value = "/myorder",method = RequestMethod.GET)
     public Object getMyOrder(HttpServletRequest request){
-        user u = (user) SessionHelper.getSession(request.getRequestedSessionId());
+        Map u = (Map) SessionHelper.getSession(request.getRequestedSessionId());
         Map<String,Object> param = new HashMap<>();
-        param.put("userAccount",u.getAccount());
+        param.put("userAccount",u.get("account"));
         List<order> orders = dataTool.searchOrder(param);
         List<Object> results = new ArrayList<>();
         for(order o : orders){

@@ -157,7 +157,6 @@ public class HttpConnector implements Runnable {
             HttpProcessor processor = newProcessor();
             recycle(processor);
         }
-
     }
 
 }

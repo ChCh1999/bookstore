@@ -54,6 +54,7 @@ public class SpringApplication {
         //把所有的.替换成/
         String resource = packageName.replaceAll("\\.", "/");
         URL url  =Thread.currentThread().getContextClassLoader().getResource(resource);
+        System.out.println("doScanner root path: "+ url.getPath());
         File dir = new File(url.getFile());
         for (File file : dir.listFiles()) {
             if(file.isDirectory()){

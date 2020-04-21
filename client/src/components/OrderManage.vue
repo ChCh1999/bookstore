@@ -1,17 +1,8 @@
  <template>
   <div>
-    <el-input v-model="filterQuery.orderId"
-              placeholder="订单号..."
-              style="width: 150px;" />
-    <el-input v-model="filterQuery.userId"
-              placeholder="用户id..."
-              style="width: 150px;"
-              class="filter-item" />
-    <el-button class="filter-item"
-               type="primary">搜索</el-button>
     <el-table :data="tableData.slice(
-      (currentPage - 1) * filterQuery.pageSize,
-      currentPage * filterQuery.pageSize
+      (currentPage - 1) * 10,
+      currentPage * 10
     )"
               border
               stripe
@@ -46,13 +37,11 @@
     </el-table>
     <div style="float:right;margin-top:30px;">
       <el-pagination background
+                     :page-size="10"
                      :current-page="currentPage"
-                     :page-sizes="[10, 20, 30, 40]"
-                     :page-size="filterQuery.pageSize"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="tableData.length"
-                     @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange" />
+                     @current-change="changePage"
+                     layout="total, prev, pager, next, jumper"
+                     :total="tableData.length" />
     </div>
   </div>
 </template>
@@ -64,26 +53,15 @@ export default {
     return {
       tableData: [],
       currentPage: 1,
-      filterQuery: {
-        pageNum: 1,
-        pageSize: 10
-      },
       form: {},
-      imageUrl: "",
       dialogFormVisible: false,
-      dialogStatus: "",
       formLabelWidth: "120px",
       imgLabelWidth: "120px"
     }
   },
   methods: {
-    handleSizeChange (val) {
-      this.filterQuery.pageSize = val;
-      this.getList();
-    },
-    handleCurrentChange (val) {
-      this.filterQuery.pageNum = val;
-      this.getList();
+    changePage (page) {
+      this.currentPage = page
     },
     deleteOrder (orderId) {
       console.log("Deleting orderid: " + orderId)

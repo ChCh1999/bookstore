@@ -97,7 +97,13 @@ export default {
           bookid: order.id,
           count: order.count
         }).then(response => {
-          console.log(response)
+          this.$message({
+            message: '提交成功！',
+            type: 'success',
+            showClose: true
+          })
+          order["commited"] = true
+          this.$store.commit('deleteCommitedOrders')
         }).catch(error => {
           console.log(error)
         })
@@ -108,6 +114,7 @@ export default {
       this.indexToDelete = index
     },
     deleteOrder (index) {
+      console.log("delete order index: " + index)
       this.$store.commit('deleteOrder', index)
       this.dialog1Visible = false
     },

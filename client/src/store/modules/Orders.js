@@ -30,6 +30,15 @@ const mutations = {
     addOrder (state, order) {
         console.log("add order name: " + order.name)
         state.bookOrders.push(order)
+    },
+
+    deleteCommitedOrders (state) {
+        console.log("deleting commited orders")
+        for (var i = 0; i < state.bookOrders.length; i++) {
+            if (state.bookOrders[i].commited == true) {
+                state.bookOrders.splice(i, 1)
+            }
+        }
     }
 }
 

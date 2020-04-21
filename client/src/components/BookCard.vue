@@ -67,6 +67,11 @@ export default {
         price: this.price
       }
       this.$store.commit('addOrder', order)
+      this.$message({
+        message: '添加成功！',
+        type: 'success',
+        showClose: true
+      })
     }
   }
 };

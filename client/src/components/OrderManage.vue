@@ -9,33 +9,38 @@
               class="filter-item" />
     <el-button class="filter-item"
                type="primary">搜索</el-button>
-    <el-table :data="tableData"
+    <el-table :data="tableData.slice(
+      (currentPage - 1) * filterQuery.pageSize,
+      currentPage * filterQuery.pageSize
+    )"
               border
               stripe
               style="width: 100%">
       <el-table-column type="index"
                        label="序号"
                        width="50"></el-table-column>
-      <el-table-column prop="orderId"
+      <el-table-column prop="id"
                        label="订单id"></el-table-column>
-      <el-table-column prop="userId"
+      <el-table-column prop="userAccount"
                        label="用户id"></el-table-column>
-      <el-table-column prop="bookName"
+      <el-table-column prop="bookInfo.name"
                        label="书籍名称"></el-table-column>
-      <el-table-column prop="bookSellNum"
+      <el-table-column prop="count"
                        label="购买数量"></el-table-column>
-      <el-table-column prop="bookPri"
+      <el-table-column prop="bookInfo.price"
                        label="单价"></el-table-column>
-      <el-table-column prop="totalPri"
-                       label="总金额"></el-table-column>
-      <el-table-column prop="orderDate"
-                       label="下单时间"></el-table-column>
+      <el-table-column label="总金额">
+        <template slot-scope="scope">
+          {{(scope.row.bookInfo.price * scope.row.count).toFixed(2)}}
+        </template>
+      </el-table-column>
       <el-table-column align="center"
                        prop="created_at"
                        label="操作">
-        <template>
+        <template slot-scope="scope">
           <el-button type="danger"
-                     size="small">删除</el-button>
+                     size="small"
+                     @click="deleteOrder(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -43,9 +48,9 @@
       <el-pagination background
                      :current-page="currentPage"
                      :page-sizes="[10, 20, 30, 40]"
-                     :page-size="10"
+                     :page-size="filterQuery.pageSize"
                      layout="total, sizes, prev, pager, next, jumper"
-                     :total="total"
+                     :total="tableData.length"
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange" />
     </div>
@@ -57,53 +62,7 @@ export default {
   name: 'orders-manage',
   data () {
     return {
-      tableData: [
-        {
-          orderId: 'xxx184452222',
-          userId: "001",
-          bookName: "Java开发",
-          orderDate: "2020-04-18",
-          bookSellNum: "20",
-          bookPri: "￥50",
-          totalPri: "￥100",
-          bookPublish: "清华大学出版社",
-          bookPagination: "1000页"
-        },
-        {
-          orderId: 'xxx184452223',
-          userId: "002",
-          bookName: "Web开发",
-          orderDate: "2020-04-18",
-          bookSellNum: "20",
-          bookPri: "￥50",
-          totalPri: "￥100",
-          bookPublish: "清华大学出版社",
-          bookPagination: "1000页"
-        },
-        {
-          orderId: 'xxx184452224',
-          userId: "003",
-          bookName: "C#开发",
-          orderDate: "2020-04-18",
-          bookSellNum: "20",
-          bookPri: "￥50",
-          totalPri: "￥100",
-          bookPublish: "清华大学出版社",
-          bookPagination: "1000页"
-        },
-        {
-          orderId: 'xxx184452225',
-          userId: "004",
-          bookName: "NodeJs开发",
-          orderDate: "2020-04-18",
-          bookSellNum: "20",
-          bookPri: "￥50",
-          totalPri: "￥100",
-          bookPublish: "清华大学出版社",
-          bookPagination: "1000页"
-        }
-      ],
-      total: 4,
+      tableData: [],
       currentPage: 1,
       filterQuery: {
         pageNum: 1,
@@ -125,8 +84,51 @@ export default {
     handleCurrentChange (val) {
       this.filterQuery.pageNum = val;
       this.getList();
+    },
+    deleteOrder (orderId) {
+      console.log("Deleting orderid: " + orderId)
+      this.axios.post("server/order/delete", {
+        orderid: orderId
+      })
+        .then(response => {
+          if (response.status === 200) {
+            this.$options.methods.refresh(this)
+            this.$message({
+              message: "删除成功",
+              showClose: true,
+              type: "success"
+            })
+          } else {
+            this.$message.error({
+              message: "删除失败",
+              showClose: true
+            })
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    refresh (vueComponent) {
+      console.log("refreshing")
+      console.log(vueComponent)
+      vueComponent.axios.get("server/order/all").then(response => {
+        vueComponent.tableData = response.data
+      })
+        .catch(error => {
+          console.log(error)
+        })
     }
-
+  },
+  mounted () {
+    console.log("ordermanag mounted")
+    console.log(this)
+    this.axios.get("server/order/all").then(response => {
+      this.tableData = response.data
+    })
+      .catch(error => {
+        console.log(error)
+      })
   }
 }
 </script>

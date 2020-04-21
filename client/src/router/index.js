@@ -5,7 +5,7 @@ import Cart from '../views/Cart.vue'
 import CommitOrders from '../views/CommitOrders.vue'
 import UserInfo from '../views/UserInfo.vue'
 import Login from "../views/Login.vue"
-
+import Manager from "../views/Manager.vue"
 import store from "../store/index.js"
 
 Vue.use(VueRouter);
@@ -46,6 +46,10 @@ const routes = [
   {
     path: '/login',
     component: Login
+  },
+  {
+    path: '/manager',
+    component: Manager
   }
 ];
 

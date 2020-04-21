@@ -72,7 +72,7 @@ public class UserController {
             httpResponse.setSeesion(uuid.toString());
             return "login success";
         } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_NON_AUTHORITATIVE_INFORMATION);
             return "login failed";
         }
     }

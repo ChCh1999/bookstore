@@ -94,18 +94,23 @@ export default {
               password: cur.loginForm.pass
             })
             .then(response => {
-              console.log('login response', response);
+              console.log("login response", response);
               if (response.status === 200) {
                 // console.log(cur.loginForm.account)
                 cur.$store.commit("successLogin", cur.loginForm.account);
                 cur.$router.push({ path: "/store" });
               } else {
-                alert("账号或密码错误");
+                cur.message.error("账号或密码错误！")
               }
+              cur;
             })
             .catch(error => {
-              console.log(error);
-              alert("账号或密码错误");
+              // console.log(error);
+              cur.$message({
+                message: "账号或密码错误！",
+                type: "error",
+                showClose: true
+              });
             });
         } else {
           console.log("error submit!!");
@@ -143,7 +148,7 @@ export default {
   text-align: center;
   top: 60px;
 }
-.cardButton{
+.cardButton {
   position: relative;
   width: 80%;
   left: 10%;

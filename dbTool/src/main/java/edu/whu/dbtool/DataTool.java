@@ -254,6 +254,15 @@ public class DataTool {
      */
     public boolean insertOrder(order aOrder) {
         try {
+            Map<String,Object> params=new HashMap<>();
+            params.put("userAccount", aOrder.getUserAccount());
+            params.put("bookID", aOrder.getBookID());
+            List<order> orders=rs2OrderList(dbUtil.searchData("order", params));
+            if (orders.size()!=0){
+                order target=orders.get(0);
+                target.setCount(target.getCount()+1);
+                return updateOrder(target);
+            }
             return dbUtil.insertData("order", aOrder.genDataMap()) == 1;
         } catch (DBException dbe) {
             System.out.println(dbe.getMessage());

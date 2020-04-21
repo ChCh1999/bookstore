@@ -9,6 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -20,15 +21,19 @@ public class ImgUtil {
 //    public static String imgRoot1 =ImgUtil.class.getResource("static").getFile();
 
     public static String Img2Base64(String imgPath) {
-        File f = new File(imgPath);
         try {
+            File f = new File(imgPath);
+            imgPath= URLDecoder.decode(imgPath,"utf-8");
             BufferedImage bi = ImageIO.read(f);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(bi, "jpg", baos);
+            System.out.println("read "+imgPath);
             byte[] bytes = baos.toByteArray();
             return encoder.encodeBuffer(bytes).trim();
+
         } catch (IOException ioe) {
-            System.out.println(ioe);
+            System.out.print("error when read "+imgPath);
+            ioe.printStackTrace();
             return null;
         }
     }

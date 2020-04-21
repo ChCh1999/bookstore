@@ -23,7 +23,7 @@ public class FileController {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             String ss = (String)data.get("fileName");
             int index = ss.lastIndexOf(".");
-            String suffix = ss.substring(index+1);
+            String suffix = "jpg";
             String name = sdf.format(new Date())+"."+suffix;
 
             String imgData = (String) data.get("imgData");

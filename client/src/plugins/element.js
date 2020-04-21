@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Row, Col, Message, Button, Card, Pagination, InputNumber, Container, Table, TableColumn, Dialog, Badge, Input, Form, FormItem, Tabs, TabPane } from 'element-ui'
+import {Upload, Row, Col, Message, Button, Card, Pagination, InputNumber, Container, Table, TableColumn, Dialog, Badge, Input, Form, FormItem, Tabs, TabPane } from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Card)
@@ -17,6 +17,7 @@ Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Upload)
 Message.install = function (Vue, options) {
   Vue.prototype.$message = Message
 }

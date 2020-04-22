@@ -66,7 +66,7 @@
                      :before-upload="beforeAvatarUpload">
             <img id="dialog-img"
                  :src="imageUrl"
-                 v-if="imageUrl" />
+                 v-if="imgStatus" />
             <i v-else
                class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -154,6 +154,9 @@ export default {
   computed: {
     dialogStatus () {
       return this.isAdd ? "create" : "update"
+    },
+    imgStatus(){
+      return this.imageUrl!==''
     }
   },
   mounted () {

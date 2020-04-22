@@ -40,6 +40,15 @@ public class BaseDataUtil {
         this.conn.close();
         this.conn=DBUtil.getConnection();
     }
+
+    /**
+     * SQL更新语句执行
+     * @param sql 语句模板串
+     * @param keyList 关键字
+     * @param params 参数map
+     * @return 更新行数
+     * @throws DBException 参数不完整或SQL语句执行过程中出错
+     */
     private int executeUpdate(String sql, List<String> keyList, Map<String, Object> params) throws DBException {
         try {
             //设置参数
@@ -100,6 +109,14 @@ public class BaseDataUtil {
 
     }
 
+    /**
+     * 按照参数构造插入语句
+     * @param table 表名
+     * @param params 参数
+     * @param keyList 用于存储键值列表，与SQL模板中？一一对应
+     * @return SQL模板字符串
+     * @throws DBException 参数为空抛出错误
+     */
     private String buildInsertSQL(String table, Map<String, Object> params, List<String> keyList) throws DBException {
         //构造SQL语句
         StringBuilder sql = new StringBuilder("INSERT INTO "  + "`"+ table+"` ");
@@ -133,7 +150,7 @@ public class BaseDataUtil {
      * @param table  表名
      * @param params 参数映射
      * @return 是否插入成功
-     * @throws DBException
+     * @throws DBException 参数有误或者执行出错
      */
     public int insertData(String table, Map<String, Object> params) throws DBException {
         List<String> keyList = new ArrayList<>();

@@ -12,6 +12,7 @@ import java.util.Properties;
  * @author Ch
  * @version 1.0
  */
+@SuppressWarnings("ALL")
 public class DBUtil{
     private static DataSource ds = null;
 
@@ -28,7 +29,7 @@ public class DBUtil{
         }
     }
 
-    public static Connection getConnection() throws SQLException {
+    static Connection getConnection() throws SQLException {
         return ds.getConnection();
     }
 

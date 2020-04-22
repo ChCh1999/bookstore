@@ -59,14 +59,14 @@
                       label="书籍封面"
                       prop="imgData">
           <el-upload class="avatar-uploader"
-                     action="#"
+                     action="https://jsonplaceholder.typicode.com/posts/"
                      drag
                      :show-file-list="false"
                      :on-success="handleAvatarSuccess"
                      :before-upload="beforeAvatarUpload">
             <img id="dialog-img"
                  :src="imageUrl"
-                 v-if="form.imgData" />
+                 v-if="imageUrl" />
             <i v-else
                class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>

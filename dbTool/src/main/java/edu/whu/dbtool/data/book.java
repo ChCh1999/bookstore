@@ -11,14 +11,33 @@ import java.util.Map;
 
 
 /**
- * @author Skyer
+ * @author Ch
  */
 public class book {
+    /**
+     * 图书id
+     */
+
     int id;
+    /**
+     * 书名
+     */
     String name;
+    /**
+     * 出版社/出版商
+     */
     String publisher;
+    /**
+     * 图书封面文件名
+     */
     String imgPath;
+    /**
+     * 图书描述信息
+     */
     String info;
+    /**
+     * 图书库存
+     */
     int storeCount;
     private boolean isChanged = false;
     //    String imgData;
